@@ -39,11 +39,10 @@ public class homework_0509 {
 		int year = Integer.parseInt(scanner.nextLine());
 
 		if ((year % 4 == 0 && year % 100 != 0) || (year % 400 == 0)) {
-            System.out.println("윤년입니다");
-        } else {
-            System.out.println("윤년이 아닙니다");
-        }
-
+			System.out.println("윤년입니다");
+		} else {
+			System.out.println("윤년이 아닙니다");
+		}
 		
 		// 문제3) switch문을 이용하여 가위, 바위, 보 중 하나가 주어졌을 때 사용자 어떤 값을 가져야 이길 수 있는 지를 출력하도록
 		// 구현하세요.
