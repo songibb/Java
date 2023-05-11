@@ -22,6 +22,6 @@ public class Product {
 	
 	//메소드
 	void getInfo(){
-		System.out.println(proName + " : " + proPrice);
+		System.out.println(proName + " : " + proPrice + "원");
 	}
 }
