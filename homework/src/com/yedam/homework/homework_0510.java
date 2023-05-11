@@ -53,7 +53,40 @@ public class homework_0510 {
 		//교수님이 내준 특별과제를 28명이 제출했는데, 그 중에서 제출 안 한 학생 2명의 출석번호를 구하는 프로그램을 작성하시오.
 		//참고 : 백준 https://www.acmicpc.net/problem/5597
 
+		//int[] attendance = new int[28]; //제출한 인원이 랜덤인 경우
+		int[] attendance = {3,1,4,5,7,9,6,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30};
+		int[] confirm = new int[30];  //제출한 명단을 새로운 배열에 넣어
+
+//		for(int i=0; i<attendance.length; i++) {
+//			attendance[i] = (int) (Math.random() * 30) +1;
+//			if(i != 0) {
+//				//중복비교
+//				for(int j = 0; j <i; j++) {
+//					if(attendance[i] ==attendance[j]) {
+//						i--; //중복 시 다시 데이터 뽑게 함
+//						break;
+//					}
+//				}
+//			}
+//		}
 		
+		
+		//제출한 인원 체크
+		for(int i = 0; i<attendance.length;i++) {
+			confirm[attendance[i]-1]++; //confirm 배열의 길이는 30이므로 인덱스에는 29까지만 존재
+		}
+		
+		for(int i=0; i<attendance.length;i++) {
+			if(confirm[i] != 0) {
+				System.out.println("제출자"+(i+1));
+			}
+		}
+		
+		for(int i=0; i<attendance.length;i++) {
+			if(confirm[i] == 0) {
+				System.out.println("미제출자"+(i+1));
+			}
+		}
 		
 		
 		
