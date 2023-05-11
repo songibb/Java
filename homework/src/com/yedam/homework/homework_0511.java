@@ -36,23 +36,50 @@ public class homework_0511 {
 				proNum = Integer.parseInt(sc.nextLine());	
 				
 			} else if(selectNo == 2) {
+				
 				proArr = new Product[proNum];
 				
 				for(int i = 0; i<proNum; i++) {
+					
+					proArr[i] = new Product();
+					
 					System.out.println("상품명>");
 					proArr[i].proName = sc.nextLine();
-					
 					System.out.println("가격>");
-					proArr[i].proPrice = sc.nextLine();
+					proArr[i].proPrice = Integer.parseInt(sc.nextLine());
+					
 				}
 				
 			} else if(selectNo == 3) {
 				
-				
+				for(int i = 0; i<proArr.length; i++) {
+					proArr[i].getInfo();
+				}
+
 			} else if(selectNo == 4) {
 				
-			} else if(selectNo == 5) {
+				//최고 가격을 가지는 제품
+				int maxPrice = 0;
+				String maxName = null;
+				int total = 0;
+				for(int i = 0; i<proArr.length; i++) {
+					if(maxPrice < proArr[i].proPrice) {
+						maxPrice = proArr[i].proPrice;	
+						maxName = proArr[i].proName;
+					}
+					total = total + proArr[i].proPrice;
+				}
+				System.out.println(maxName + " : " + maxPrice);
 				
+				//최고가격 제품을 제외한 제품들의 총합
+				System.out.println("최고가격 제품을 제외한 제품들의 총합 : " + (total - maxPrice));
+				
+			} else if(selectNo == 5) {
+				System.out.println("프로그램 종료");
+				break;
+				
+			} else {
+				System.out.println("없는 번호 입력");
 			}
 			
 			

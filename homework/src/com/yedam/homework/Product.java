@@ -14,11 +14,14 @@ public class Product {
 
 	//필드
 	String proName;
-	String proPrice;
+	int proPrice;
 	
 	//생성자
 	Product(){
 	}
 	
 	//메소드
+	void getInfo(){
+		System.out.println(proName + " : " + proPrice);
+	}
 }
