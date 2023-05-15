@@ -11,14 +11,23 @@ public class Application {
 		
 		
 		//Q2	
-		
-		StandardWeightInfo swi = (StandardWeightInfo) new Human("홍길동", 168, 45);
+		StandardWeightInfo swi =  new StandardWeightInfo("홍길동", 168, 45);
 		swi.getInformation();
 		
 		ObesityInfo oi = new ObesityInfo("박둘이", 168, 90);
 		oi.getInformation();
 
-
+		
+		//Q3
+		Movie movie = new Movie("추격자", 7, 5);
+		movie.setTotalScore(12);
+		movie.getInformation();
+		
+		System.out.println("=====================");
+		
+		Performance perform = new Performance("지킬앤하이드", 9, 10);
+		perform.setTotalScore(46);
+		perform.getInformation();
 		
 		
 	}
