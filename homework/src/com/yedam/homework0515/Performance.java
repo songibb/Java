@@ -14,7 +14,7 @@ public class Performance extends Culture{
 		System.out.println("공연제목 : " + title);
 		System.out.println("감독 : " + directorNo);
 		System.out.println("배우 : " + actorNo);
-		System.out.println("공연총점 : " + getTotalScore());
-		//System.out.println("공연평점 : " + getGrade());
+		System.out.println("공연총점 : " + totalScore);
+		System.out.println("공연평점 : " + getGrade());
 	}
 }
