@@ -5,6 +5,6 @@ public interface Notebook {
 	public static final int NOTEBOOK_MODE = 1;
 	
 	//추상 메소드
-	public void writeDocumentation();
-	public void searchInternet();
+	public abstract void writeDocumentation();
+	public abstract void searchInternet();
 }

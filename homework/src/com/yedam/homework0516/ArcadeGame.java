@@ -2,9 +2,10 @@ package com.yedam.homework0516;
 
 public class ArcadeGame implements Keypad {
 
-	public int mode = NORMAL_MODE;
+	public int mode;
 	
 	ArcadeGame(){
+		mode = NORMAL_MODE;
 		System.out.println("ArcadeGame 실행");
 	}
 	
@@ -40,12 +41,15 @@ public class ArcadeGame implements Keypad {
 
 	@Override
 	public void changeMode() {
+		String modename;
 		if(mode == NORMAL_MODE) {
 			mode = HARD_MODE;
+			modename = "HARD_MODE";
 		} else {
 			mode = NORMAL_MODE;
+			modename = "NORMAL_MODE";
 		}
-		System.out.println("현재모드 : " + mode);
+		System.out.println("현재모드 : " + modename);
 	}
 
 }
