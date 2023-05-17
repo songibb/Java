@@ -8,10 +8,9 @@ public class Person {
 	String address;
 	
 	//생성자
-	//기본생성자 -> 필드를 초기화 하지 않는다
 	Person(){
 	}
-	//주민등록번호, 이름, 주소를 매개변수로 받아 필드를 초기화한다
+
 	Person(String ssn, String name, String address){
 		this.ssn = ssn;
 		this.name = name;

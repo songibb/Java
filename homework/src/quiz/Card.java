@@ -3,8 +3,8 @@ package quiz;
 public class Card {
 	//필드
 	String cardNo;
-	String validDate;
-	String cvc;
+	String validDate;  
+	String cvc;			
 	
 	//생성자
 	Card(String cardNo, String validDate, String cvc){

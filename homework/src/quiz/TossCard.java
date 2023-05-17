@@ -3,13 +3,13 @@ package quiz;
 public class TossCard extends Card {
 	
 	//필드
-	String company;
+	String company = "Toss";
 	String cardStaff;
 
 	//생성자
 	TossCard(String cardNo, String validDate, String cvc, String cardStaff) {
 		super(cardNo, validDate, cvc);
-		this.company = "Toss";
+		//this.company = "Toss";
 		this.cardStaff = cardStaff;
 				
 	}
