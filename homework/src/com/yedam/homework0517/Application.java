@@ -7,21 +7,10 @@ public class Application {
 	public static void main(String[] args) {
 		Scanner sc = new Scanner(System.in);
 		
-		String answer;
-		int randomWord = (int)(Math.random()*4)+1;
-		if(randomWord == 1) {
-			answer = "orange";
-		} else if(randomWord == 2) {
-			answer = "game";
-		} else if(randomWord == 3) {
-			answer = "phone";
-		} else {
-			answer = "smart";
-		}
-		
 		boolean run = true;
 		StringGame game = new StringGame();
-		
+
+ 			
 		while(run) {
 			System.out.println("---------------------------------------------");
 			System.out.println(" 1.문자하나 | 2.단어 | 3.입력내역 | 4.새 게임 | 5.종료 ");
@@ -50,6 +39,7 @@ public class Application {
 			
 			}
 		}
+
 	}
 
 }
