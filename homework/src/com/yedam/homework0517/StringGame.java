@@ -94,6 +94,7 @@ public class StringGame {
 	//새 게임  : 기존에 선택한 단어 대신 랜덤으로 새 단어를 선택하며 입력내역을 초기화
 	public void init() {
 		
+		
 
 	}
 }
