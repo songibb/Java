@@ -8,7 +8,7 @@ public class StudentService {
 	
 	//전체 학생 조회
 	public void getStudnetList() {
-		List<Student> list = StudentDAO.getInstacne().getStudentList();
+		List<Student> list = StudentDAO.getInstance().getStudentList();
 		
 		if(list.size()==0) {
 			System.out.println("| 정보가 입력 되어 있지 않습니다.");
@@ -32,7 +32,7 @@ public class StudentService {
 		System.out.println("| 학번 입력>");
 		int stdId = Integer.parseInt(sc.nextLine());
 		
-		Student std = StudentDAO.getInstacne().getStudent(stdId);
+		Student std = StudentDAO.getInstance().getStudent(stdId);
 		
 		if(std != null) {
 			System.out.println("=========================");
@@ -61,7 +61,7 @@ public class StudentService {
 		System.out.println("| 점수 >");
 		std.setStdPoint(Integer.parseInt(sc.nextLine()));
 		
-		int result = StudentDAO.getInstacne().insertStd(std);
+		int result = StudentDAO.getInstance().insertStd(std);
 		
 		if(result > 0) {
 			System.out.println("학생 정보 입력 완료");
@@ -79,7 +79,7 @@ public class StudentService {
 		System.out.println("| 학번 >");
 		int stdId = Integer.parseInt(sc.nextLine());
 		
-		int result = StudentDAO.getInstacne().deleteStd(stdId);
+		int result = StudentDAO.getInstance().deleteStd(stdId);
 		
 		if(result > 0) {
 			System.out.println("학생 정보 삭제 완료");
@@ -100,7 +100,7 @@ public class StudentService {
 		System.out.println("| 전공 >");
 		std.setStdMajor(sc.nextLine());
 		
-		int result = StudentDAO.getInstacne().modifyMajor(std);
+		int result = StudentDAO.getInstance().modifyMajor(std);
 		
 		if(result > 0) {
 			System.out.println("학생 정보 수정 완료");

@@ -12,7 +12,7 @@ public class StudentDAO extends DAO {
 	private StudentDAO() {
 		
 	}
-	public static StudentDAO getInstacne() {
+	public static StudentDAO getInstance() {
 		if(stdDao == null) {
 			stdDao = new StudentDAO();
 		}
@@ -35,7 +35,7 @@ public class StudentDAO extends DAO {
 				std.setStdId(rs.getInt("std_id"));
 				std.setStdName(rs.getString("std_name"));
 				std.setStdMajor(rs.getString("std_major"));
-				std.setStdPoint(rs.getInt("sed_point"));
+				std.setStdPoint(rs.getInt("std_point"));
 				list.add(std);
 			}
 		} catch(Exception e){
@@ -63,7 +63,7 @@ public class StudentDAO extends DAO {
 				std.setStdId(rs.getInt("std_id"));
 				std.setStdName(rs.getString("std_name"));
 				std.setStdMajor(rs.getString("std_major"));
-				std.setStdPoint(rs.getInt("sed_point"));
+				std.setStdPoint(rs.getInt("std_point"));
 			}
 		}catch(Exception e) {
 			e.printStackTrace();
@@ -132,6 +132,8 @@ public class StudentDAO extends DAO {
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, std.getStdMajor());
 			pstmt.setInt(2, std.getStdId());
+			
+			result = pstmt.executeUpdate();
 			
 		}catch(Exception e) {
 			e.printStackTrace();
