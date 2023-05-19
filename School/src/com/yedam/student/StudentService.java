@@ -7,7 +7,7 @@ public class StudentService {
 	Scanner sc = new Scanner(System.in);
 	
 	//전체 학생 조회
-	public void getStudnetList() {
+	public void getStudentList() {
 		List<Student> list = StudentDAO.getInstance().getStudentList();
 		
 		if(list.size()==0) {
@@ -110,5 +110,21 @@ public class StudentService {
 		
 	}
 	
+	
+	//전공별 성적 합계, 평균 -> DB에서 조회된 정보를 활용해서 만드는 방식
+	//Java -> 전공을 확인 -> 배열에다 넣어주고 -> 전공별로 합계 또는 평균 -> 복잡해짐
+	//데이터를 다룰때 DB에서 처리가 가능하다면, 최대한 DB에서 처리하고 JAVA로 넘겨주는게 훨씬 간편함
+	public void getAnalyze() {
+		List<Student> list = StudentDAO.getInstance().getAnalyze();
+	
+		for(int i = 0; i<list.size(); i++) {
+				System.out.println("=========================");
+				System.out.println("| 전공 : " + list.get(i).getStdMajor());
+				System.out.println("| 합계 : " + list.get(i).getSum());
+				System.out.println("| 평균 : " + list.get(i).getAvg());
+				System.out.println("| 학생수 : " + (int)(list.get(i).getSum()/list.get(i).getAvg()) + "명");
+		}
+		
+	}
 	
 }

@@ -27,7 +27,9 @@ public class DAO {
 	String url = "jdbc:oracle:thin:@localhost:1521:xe";
 	String id = "HR";
 	String pw = "1234";
-
+	
+	//Build Path -> Configure Build Path -> Libraries -> Modulepath 선택 -> Add External JARs -> ojdbc숫자.jar파일 선택
+	//Referenced Libraries 안에 jar파일 들어가면 성공
 	
 	//DB 연결 메소드
 	public void conn() {
@@ -61,10 +63,6 @@ public class DAO {
 			e.printStackTrace();
 		}
 	}
-	
-
-	//Build Path -> Configure Build Path -> Libraries -> Modulepath 선택 -> Add External JARs -> ojdbc숫자.jar파일 선택
-	//Referenced Libraries 안에 jar파일 들어가면 성공
 	
 	
 	

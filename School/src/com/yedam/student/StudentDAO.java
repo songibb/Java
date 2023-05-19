@@ -26,8 +26,8 @@ public class StudentDAO extends DAO {
 		Student std = null;
 		try {
 			conn();
-			String sql = "SELECT * FROM student";
-			pstmt = conn.prepareStatement(sql);
+			String sql = "SELECT * FROM student ORDER BY 1";  //"ORDER BY 1" 이부분이 빠지면 학번 순서대로 출력 안됨-> DB에서 여러 block안에 비어있는 곳 먼저 데이터가 저장되어서 데이터가 순서대로 저장되어있지 않음 
+			pstmt = conn.prepareStatement(sql);				  //-> 정렬필요시 ORDER BY절 사용할 것
 			rs = pstmt.executeQuery();
 			
 			while(rs.next()) {
@@ -145,6 +145,34 @@ public class StudentDAO extends DAO {
 	}
 	
 	
-	
+	//전공별 성적 합계 및 평균
+	public List<Student> getAnalyze(){
+		List<Student> list = new ArrayList<>();
+		Student std = null;
+		try {
+			conn();
+			String sql = "SELECT std_major, sum(std_point) total, avg(std_point)\r\n"
+					+ "FROM student\r\n"
+					+ "GROUP BY std_major";  
+			pstmt = conn.prepareStatement(sql);		
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				std = new Student();
+				std.setStdMajor(rs.getString("std_major"));
+				std.setSum(rs.getDouble("total"));   //컬럼명을 별칭 total로 설정해서 total로 입력
+				std.setAvg(rs.getDouble("avg(std_point)"));  //별칭을 넣지 않으면 그대로 입력
+				list.add(std);
+			}
+			
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			disconn();
+		}
+		
+		return list;
+	}
 	
 }
