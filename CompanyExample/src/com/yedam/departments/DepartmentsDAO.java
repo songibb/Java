@@ -41,7 +41,7 @@ public class DepartmentsDAO extends DAO {
 			}finally {
 				disconn();
 			}
-			
+		
 			return list;
 		}
 	

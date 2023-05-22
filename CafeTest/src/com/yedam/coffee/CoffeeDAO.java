@@ -137,14 +137,16 @@ public class CoffeeDAO extends DAO {
 		return result;
 	}
 	
+	
+	
 	//매출 
 	public List<Coffee> salesCoffeeList(){
 		List<Coffee> list = new ArrayList<>();
 		Coffee coffee = null;
 		try {
 			conn();
-			String sql = "SELECT coffee_menu, coffee_sales/coffee_price as \"판매갯수\", coffee_sales \r\n"
-					+ "FROM coffee";
+			String sql = "SELECT coffee_menu, coffee_sales, coffee_price*coffee_sales  AS \"판매금액\"\r\n" + 
+					"FROM coffee";
 			
 			pstmt = conn.prepareStatement(sql);
 			rs = pstmt.executeQuery();
@@ -152,8 +154,8 @@ public class CoffeeDAO extends DAO {
 			while(rs.next()) {
 				coffee = new Coffee();
 				coffee.setCoffeeMenu(rs.getString("coffee_menu"));
-				coffee.setCoffeePrice(rs.getInt(""));
-				coffee.setCoffeeSales(rs.getInt("판매금액"));
+				coffee.setCoffeeSales(rs.getInt("coffee_sales"));
+				coffee.setCoffeePrice(rs.getInt("판매금액"));
 				list.add(coffee);
 			}
 			

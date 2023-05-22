@@ -91,14 +91,15 @@ public class CoffeeService {
 	//매출 
 	public void salesCoffeeList() {
 		List<Coffee> list = CoffeeDAO.getInstance().salesCoffeeList();
-		int total = 0;
+		int totalSales = 0;
 		for(int i = 0; i<list.size(); i++) {
 			System.out.println("메뉴 : " + list.get(i).getCoffeeMenu() + ", 판매갯수 : "
 						+ list.get(i).getCoffeeSales() + "개, 판매금액 : " 
 						+ list.get(i).getCoffeeSales()*list.get(i).getCoffeePrice()+"원");				
-			total += list.get(i).getCoffeeSales()*list.get(i).getCoffeePrice();
+			totalSales += list.get(i).getCoffeeSales()*list.get(i).getCoffeePrice();
 		}
-		System.out.println("총 판매금액 : " + total);
+		System.out.println("총 판매금액 : " + totalSales +"원");
+		
 
 	}
 	
