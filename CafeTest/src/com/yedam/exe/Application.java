@@ -17,9 +17,9 @@ public class Application {
 		
 		boolean flag = true;
 		while(flag) {
+			menu();	
 			System.out.println("메뉴 입력>");
 			String no = sc.nextLine();
-			 menu();		 
 			 switch(no) {
 			 case "1":
 				 cs.getCoffeeList();
