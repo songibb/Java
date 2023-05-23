@@ -107,7 +107,7 @@ public class MemberService {
 		System.out.println("PW : " + member.getMemberPw());
 		System.out.println("Phone : "+ member.getMemberPhone());
 		System.out.println("Addr : "+ member.getMemberAddr());
-		System.out.println("Grdae : "+ (member.getMemberGrade().equals("N") ? "일반사용자" : "관리자"));
+		System.out.println("Grade : "+ (member.getMemberGrade().equals("N") ? "일반사용자" : "관리자"));
 	}
 		
 	
