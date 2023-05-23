@@ -135,6 +135,8 @@ public class AdminApp {
 		case 6:
 			memberManage();
 			break;
+		default:
+			System.out.println("메뉴를 잘못 입력하였습니다.");
 		}
 	}
 	

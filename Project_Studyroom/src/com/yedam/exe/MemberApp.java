@@ -30,7 +30,7 @@ public class MemberApp {
 				MemberService.memberInfo = null;
 				System.out.println("로그아웃 완료되었습니다.");			
 			} else {
-				System.out.println("메뉴를 입력 선택하였습니다.");
+				System.out.println("메뉴를 잘못 입력하였습니다.");
 			}
 		}	
 	}

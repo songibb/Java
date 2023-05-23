@@ -57,11 +57,11 @@ public class MemberDAO extends DAO{
 			conn();
 			String sql = "";
 			if(day==1) {
-				sql = "INSERT INTO member VALUES(?,?,?,?,sysdate,sysdate+1,'N')";
+				sql = "INSERT INTO member VALUES(seq_member_memberno.nextval,?,?,?,?,sysdate,sysdate+1,'N')";
 			} else if(day==2) {
-				sql = "INSERT INTO member VALUES(?,?,?,?,sysdate,sysdate+7,'N')";
+				sql = "INSERT INTO member VALUES(seq_member_memberno.nextval,?,?,?,?,sysdate,sysdate+7,'N')";
 			} else if(day==3) { 
-				sql = "INSERT INTO member VALUES(?,?,?,?,sysdate,sysdate+30,'N')";
+				sql = "INSERT INTO member VALUES(seq_member_memberno.nextval,?,?,?,?,sysdate,sysdate+30,'N')";
 			}		
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, member.getMemberId());
@@ -81,7 +81,7 @@ public class MemberDAO extends DAO{
 		int result = 0;		
 		try {
 			conn();
-			String sql = "INSERT INTO member VALUES(?,?,?,?,null,null,'A')";
+			String sql = "INSERT INTO member VALUES(seq_member_memberno.nextval,?,?,?,?,null,null,'A')";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, member.getMemberId());
 			pstmt.setString(2, member.getMemberPw());
@@ -90,7 +90,7 @@ public class MemberDAO extends DAO{
 			result = pstmt.executeUpdate();							
 		} catch(Exception e) {
 			e.printStackTrace();
-		} finally {
+		} finally {  
 			disconn();
 		}		
 		return result;
@@ -103,12 +103,13 @@ public class MemberDAO extends DAO{
 		Member member = null;
 		try {
 			conn();
-			String sql = "SELECE * FROM member";
+			String sql = "SELECT * FROM member ORDER BY member_no";
 			pstmt = conn.prepareStatement(sql);
 			rs = pstmt.executeQuery();
 			
 			while(rs.next()) {
 				member = new Member();
+				member.setMemberNo(rs.getInt("member_no"));
 				member.setMemberId(rs.getString("member_id"));
 				member.setMemberPw(rs.getString("member_pw"));
 				member.setMemberName(rs.getString("member_name"));
@@ -116,7 +117,9 @@ public class MemberDAO extends DAO{
 				member.setMemberStartdate(rs.getDate("member_startdate"));
 				member.setMemberEnddate(rs.getDate("member_enddate"));
 				member.setMemberAuth(rs.getString("member_auth"));
+				list.add(member);
 			}
+			
 		} catch(Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -125,12 +128,74 @@ public class MemberDAO extends DAO{
 		return list;
 	}
 	
-	//회원 수정 조회
+	//개별 회원 조회
+	public Member getMember(String id) {
+		Member member = null;
+		try {
+			conn();
+			String sql = "SELECT * FROM member WHERE member_id = ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, id);
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				member = new Member();
+				member.setMemberNo(rs.getInt("member_no"));
+				member.setMemberId(rs.getString("member_id"));
+				member.setMemberPw(rs.getString("member_pw"));
+				member.setMemberName(rs.getString("member_name"));
+				member.setMemberTel(rs.getString("member_tel"));
+				member.setMemberStartdate(rs.getDate("member_startdate"));
+				member.setMemberEnddate(rs.getDate("member_enddate"));
+				member.setMemberAuth(rs.getString("member_auth"));
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			disconn();
+		}
+		return member;
+	}
+	
+	//만료 회원 조회
+	public List<Member> endMemberList(){
+		List<Member> list = new ArrayList<>();
+		Member member = null;
+		try {
+			conn();
+			String sql = "SELECT *\r\n" + 
+					"FROM member\r\n" + 
+					"WHERE member_enddate = TO_DATE(sysdate, 'YY-MM-DD')";
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				member = new Member();
+				member.setMemberNo(rs.getInt("member_no"));
+				member.setMemberId(rs.getString("member_id"));
+				member.setMemberPw(rs.getString("member_pw"));
+				member.setMemberName(rs.getString("member_name"));
+				member.setMemberTel(rs.getString("member_tel"));
+				list.add(member);
+			}
+			
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			disconn();
+		}
+		return list;
+	}
+	
+	
+	
+	//회원 수정
 	public int updateMember(Member member, int num, int day) {
 		int result = 0;
 		try {
 			conn();
-			String sql = "";			
+			String sql = "";	
+			
 			if(num==1) {
 				sql = "UPDATE member SET member_pw = ? WHERE member_id = ?";
 				pstmt = conn.prepareStatement(sql);
@@ -140,33 +205,31 @@ public class MemberDAO extends DAO{
 			} else if(num==2) {
 				sql = "UPDATE member SET member_tel = ? WHERE member_id = ?";
 				pstmt = conn.prepareStatement(sql);
-				pstmt.setString(1, member.getMemberPw());
+				pstmt.setString(1, member.getMemberTel());
 				pstmt.setString(2, member.getMemberId());
 				result = pstmt.executeUpdate();	
 			} else if(num==3) {
 				
 			} else if(num==4) {
 				
-			} else if(num==5) {
-				
+			} else if(num==5) {			
 				sql = "UPDATE member SET member_startdate = ? WHERE member_id = ?";
 				pstmt = conn.prepareStatement(sql);
 				pstmt.setDate(1, member.getMemberStartdate());
 				pstmt.setString(2, member.getMemberId());
 				result = pstmt.executeUpdate();
 				
-
-//				if(day==1) {
-//					sql = "UPDATE member SET member_enddate = member_startdate + 1,  WHERE member_id = ?";
-//				} else if(day==2) {
-//					sql = "UPDATE member SET member_enddate = member_startdate + 7,  WHERE member_id = ?";
-//				} else if(day==3) { 
-//					sql = "UPDATE member SET member_enddate = member_startdate + 30,  WHERE member_id = ?";
-//				}	
-//				pstmt = conn.prepareStatement(sql);
-//				pstmt.setString(1, member.getMemberId());
-//				result = pstmt.executeUpdate();
-				
+				String sql2 = "";
+				if(day==1) {
+					sql2 = "UPDATE member SET member_enddate = member_startdate + 1 WHERE member_id = ?";
+				} else if(day==2) {
+					sql2 = "UPDATE member SET member_enddate = member_startdate + 7 WHERE member_id = ?";
+				} else if(day==3) { 
+					sql2 = "UPDATE member SET member_enddate = member_startdate + 30 WHERE member_id = ?";
+				}	
+				pstmt = conn.prepareStatement(sql2);
+				pstmt.setString(1, member.getMemberId());
+				result = pstmt.executeUpdate();
 			}
 		}catch(Exception e) {
 			e.printStackTrace();
