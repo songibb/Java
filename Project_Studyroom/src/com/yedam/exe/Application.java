@@ -3,6 +3,9 @@ package com.yedam.exe;
 import java.util.Scanner;
 
 import com.yedam.member.MemberService;
+import com.yedam.seat.SeatDAO;
+
+
 
 
 public class Application {
@@ -17,6 +20,7 @@ public class Application {
 	boolean run = true;	
 	
 	private void start() {	
+		
 		while(run) {
 			if(MemberService.memberInfo == null) {
 				startMenu();
@@ -32,7 +36,7 @@ public class Application {
 		}	
 	}
 		
-	private void startMenu() {
+	private void startMenu() {	
 		System.out.println("------------------------------------------------------------");
 		System.out.println("[독서실에 오신 것을 환영합니다 ╰(*°▽°*)╯]");
 		System.out.println("1. 로그인 | 2. 회원가입 | 3. 종료");

@@ -139,7 +139,7 @@ public class MemberService {
 			System.out.println("연락처>");
 			phone = sc.nextLine();
 			if(phone.length() > 13) {
-				System.out.println("자리수 초과, 13자리수 미만 입력!");
+				System.out.println("자리수 초과, 13자리수 이하 입력!");
 			} else {
 				System.out.println("연락처 확인 완료");
 				break;

@@ -4,6 +4,8 @@ import java.sql.Date;
 import java.util.List;
 import java.util.Scanner;
 
+import com.yedam.seat.Seat;
+
 public class MemberService {
 	
 	public static Member memberInfo = null;
@@ -99,11 +101,17 @@ public class MemberService {
 		System.out.println("비밀번호 : " + member.getMemberPw());
 		System.out.println("이름 : " + member.getMemberName());
 		System.out.println("연락처 : " + member.getMemberTel());
+		System.out.println("========================");
+		//좌석
+		System.out.println("좌석번호 : " + member.getSeatNo());
 		System.out.println("등록일 : " + member.getMemberStartdate());
 		System.out.println("만료일 : " + member.getMemberEnddate());
-		
-		//좌석
+		System.out.println("========================");
 		//사물함
+		//System.out.println("사물함번호 : " + member.getLockerNo());
+		//System.out.println("등록일 : " + member.getLockerStartdate());
+		//System.out.println("만료일 : " + member.getLockerEnddate());
+		System.out.println("========================");
 
 	}
 	
@@ -161,10 +169,13 @@ public class MemberService {
 			System.out.println("연락처 : " + list.get(i).getMemberTel());
 			System.out.println("========================🧡 ");
 		}
-		
 	}
+	
+	
+	
 	//회원 정보 수정
 	Member member = new Member();
+	Seat seat = new Seat();
 	int num = 0;
 	
 	public void updatePW() {	
@@ -178,20 +189,24 @@ public class MemberService {
 	public void updateTel() {
 		update1();
 		num = 2;
-		System.out.println("수정 연락처>");
-		String tel = sc.nextLine();	
+		String tel = "";
+		while(true) {
+			System.out.println("수정 연락처>");
+			tel = sc.nextLine();
+			if(tel.length() > 13) {
+				System.out.println("올바른 연락처 양식을 입력해주세요.");
+			} else {
+				System.out.println("연락처 확인되었습니다.");
+				break;
+			}
+		}
 		member.setMemberTel(tel);		
 		update2();
 	}	
-	public void updateSeat() {
-		
-	}
-	public void updateLocker() {
-		
-	}
+	
 	public void updateStartdate() {
 		update1();
-		num = 5;
+		num = 3;
 		System.out.println("수정 등록일 (YYYY-MM-DD)>");
 		Date date = Date.valueOf(sc.nextLine());
 		member.setMemberStartdate(date);
@@ -200,6 +215,30 @@ public class MemberService {
 		day = Integer.parseInt(sc.nextLine());	
 		update2();
 	}
+	
+	//좌석 수정 
+	public void updateSeat() {		
+		update1();
+		num = 4;	
+		int seatNo = 0;
+		while(true) {
+			System.out.println("수정 좌석번호>");
+			seatNo = Integer.parseInt(sc.nextLine());
+			if(seatNo > 30) {
+				System.out.println("존재하지 않는 좌석입니다.");
+			} else {
+				System.out.println("좌석이 선택되었습니다.");
+				break;
+			}
+		}
+		seat.setSeatNo(seatNo);
+		update2();		
+	}
+		
+	public void updateLocker() {
+		
+	}
+
 	public void update1() {
 		System.out.println("[회원 정보 수정]");
 		System.out.println("아이디>");
@@ -208,7 +247,7 @@ public class MemberService {
 	}
 	
 	public void update2() {
-		int result = MemberDAO.getInstance().updateMember(member, num, day);		
+		int result = MemberDAO.getInstance().updateMember(member, seat, num, day);		
 		if(result>0) {
 			System.out.println("회원 정보를 수정하였습니다.");
 		} else {
@@ -217,7 +256,19 @@ public class MemberService {
 	}
 	
 	
-	
+	//회원 정보 삭제
+	public void deleteMember() {
+		System.out.println("[회원 정보 삭제]");
+		System.out.println("아이디>");
+		String id = sc.nextLine();
+		
+		int result = MemberDAO.getInstance().deleteMember(id);
+		if(result>0) {
+			System.out.println("회원 정보를 삭제하였습니다.");
+		} else {
+			System.out.println("회원 정보를 삭제하지 못했습니다.");
+		}
+	}
 
 
 	

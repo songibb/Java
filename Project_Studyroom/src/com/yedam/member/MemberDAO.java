@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.yedam.common.DAO;
+import com.yedam.seat.Seat;
 
 public class MemberDAO extends DAO{
 
@@ -57,11 +58,11 @@ public class MemberDAO extends DAO{
 			conn();
 			String sql = "";
 			if(day==1) {
-				sql = "INSERT INTO member VALUES(seq_member_memberno.nextval,?,?,?,?,sysdate,sysdate+1,'N')";
+				sql = "INSERT INTO member VALUES(member_memberno_seq.NEXTVAL,?,?,?,?,sysdate,sysdate+1,'N')";
 			} else if(day==2) {
-				sql = "INSERT INTO member VALUES(seq_member_memberno.nextval,?,?,?,?,sysdate,sysdate+7,'N')";
+				sql = "INSERT INTO member VALUES(member_memberno_seq.NEXTVAL,?,?,?,?,sysdate,sysdate+7,'N')";
 			} else if(day==3) { 
-				sql = "INSERT INTO member VALUES(seq_member_memberno.nextval,?,?,?,?,sysdate,sysdate+30,'N')";
+				sql = "INSERT INTO member VALUES(member_memberno_seq.NEXTVAL,?,?,?,?,sysdate,sysdate+30,'N')";
 			}		
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, member.getMemberId());
@@ -81,7 +82,7 @@ public class MemberDAO extends DAO{
 		int result = 0;		
 		try {
 			conn();
-			String sql = "INSERT INTO member VALUES(seq_member_memberno.nextval,?,?,?,?,null,null,'A')";
+			String sql = "INSERT INTO member VALUES(member_memberno_seq.NEXTVAL,?,?,?,?,null,null,'A')";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, member.getMemberId());
 			pstmt.setString(2, member.getMemberPw());
@@ -95,6 +96,45 @@ public class MemberDAO extends DAO{
 		}		
 		return result;
 	}
+	
+	
+	//내 정보 조회
+	public Member getInfo(String id) {
+		Member member = null;
+		try {
+			conn();
+			String sql = "SELECT *\r\n"
+					+ "FROM seat s \r\n"
+					+ "LEFT JOIN member m ON s.member_id = m.member_id\r\n"
+					//+ "LEFT JOIN locker l ON m.member_id = l.member_id\r\n"
+					+ "WHERE m.member_id = ? \r\n"
+					+ "ORDER BY 1";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, id);
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				member = new Member();
+				member.setMemberId(rs.getString("member_id"));
+				member.setMemberPw(rs.getString("member_pw"));
+				member.setMemberName(rs.getString("member_name"));
+				member.setMemberTel(rs.getString("member_tel"));
+				member.setMemberStartdate(rs.getDate("member_startdate"));
+				member.setMemberEnddate(rs.getDate("member_enddate"));
+				member.setMemberAuth(rs.getString("member_auth"));
+				member.setSeatNo(rs.getInt("seat_no"));
+				//member.setLockerNo(rs.getInt("locker_no"));
+				//member.setLockerStartdate(rs.getDate("locker_startdate"));
+				//member.setLockerEnddate(rs.getDate("locker_Enddate"));
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			disconn();
+		}
+		return member;
+	}
+	
 	
 	
 	//전체 회원 조회
@@ -158,7 +198,8 @@ public class MemberDAO extends DAO{
 	}
 	
 	//만료 회원 조회
-	public List<Member> endMemberList(){
+	int result=0;
+	public List<Member> endMemberList(){		
 		List<Member> list = new ArrayList<>();
 		Member member = null;
 		try {
@@ -179,6 +220,14 @@ public class MemberDAO extends DAO{
 				list.add(member);
 			}
 			
+			//만료회원 변경
+			String sql2 = "UPDATE seat SET seat_use = 'N', member_id = null WHERE member_id = ?";
+			pstmt = conn.prepareStatement(sql2);
+			for(Member mem : list) {
+				pstmt.setString(1, mem.getMemberId());
+				result = pstmt.executeUpdate();
+			}
+		
 		} catch(Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -188,9 +237,10 @@ public class MemberDAO extends DAO{
 	}
 	
 	
+
 	
-	//회원 수정
-	public int updateMember(Member member, int num, int day) {
+	//회원 정보 수정
+	public int updateMember(Member member, Seat seat, int num, int day) {
 		int result = 0;
 		try {
 			conn();
@@ -209,10 +259,6 @@ public class MemberDAO extends DAO{
 				pstmt.setString(2, member.getMemberId());
 				result = pstmt.executeUpdate();	
 			} else if(num==3) {
-				
-			} else if(num==4) {
-				
-			} else if(num==5) {			
 				sql = "UPDATE member SET member_startdate = ? WHERE member_id = ?";
 				pstmt = conn.prepareStatement(sql);
 				pstmt.setDate(1, member.getMemberStartdate());
@@ -230,6 +276,32 @@ public class MemberDAO extends DAO{
 				pstmt = conn.prepareStatement(sql2);
 				pstmt.setString(1, member.getMemberId());
 				result = pstmt.executeUpdate();
+				
+			} else if(num==4) {
+				
+//				sql = "SELECT * FROM seat WHERE seat_use = 'Y' OR seat_use = 'N' ";
+//				pstmt = conn.prepareStatement(sql);
+//				pstmt.setString(1, id);
+//				rs = pstmt.executeQuery();
+	
+				sql = "UPDATE seat\r\n"
+						+ "SET seat_use = 'N', member_id = null\r\n"
+						+ "WHERE member_id = ?";
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setString(1, seat.getMemberId());
+				result = pstmt.executeUpdate();
+				
+				String sql2 = "UPDATE seat\r\n"
+						+ "SET seat_use = 'Y', member_id = ?\r\n"
+						+ "WHERE seat_no = ?";
+				pstmt = conn.prepareStatement(sql2);
+				pstmt.setString(1, seat.getMemberId());
+				pstmt.setInt(2, seat.getSeatNo());
+				result = pstmt.executeUpdate();	
+
+				
+			} else if(num==5) {
+				
 			}
 		}catch(Exception e) {
 			e.printStackTrace();
@@ -239,9 +311,26 @@ public class MemberDAO extends DAO{
 		return result;
 	}
 	
+
 	
 	
+	//회원 정보 삭제
+	public int deleteMember(String id) {
+		int result = 0;
+		try {
+			conn();
+			String sql = "DELETE FROM member WHERE member_id = ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, id);		
+			result = pstmt.executeUpdate();
+		}catch(Exception e){
+			e.printStackTrace();
+		}finally {
+			disconn();
+		}
 		
+		return result;
+	}
 		
 		
 	
