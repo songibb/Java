@@ -170,7 +170,7 @@ public class AdminApp {
 				ss.insertSeat();
 				break;
 			case 3:
-				//좌석해지
+				ss.deleteSeat();
 				break;
 			case 4:
 				flag = false;

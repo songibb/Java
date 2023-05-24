@@ -58,11 +58,11 @@ public class MemberDAO extends DAO{
 			conn();
 			String sql = "";
 			if(day==1) {
-				sql = "INSERT INTO member VALUES(member_memberno_seq.NEXTVAL,?,?,?,?,sysdate,sysdate+1,'N')";
+				sql = "INSERT INTO member VALUES((SELECT NVL(MAX(member_no),0)+1 FROM member),?,?,?,?,sysdate,sysdate+1,'N')";
 			} else if(day==2) {
-				sql = "INSERT INTO member VALUES(member_memberno_seq.NEXTVAL,?,?,?,?,sysdate,sysdate+7,'N')";
+				sql = "INSERT INTO member VALUES((SELECT NVL(MAX(member_no),0)+1 FROM member),?,?,?,?,sysdate,sysdate+7,'N')";
 			} else if(day==3) { 
-				sql = "INSERT INTO member VALUES(member_memberno_seq.NEXTVAL,?,?,?,?,sysdate,sysdate+30,'N')";
+				sql = "INSERT INTO member VALUES((SELECT NVL(MAX(member_no),0)+1 FROM member),?,?,?,?,sysdate,sysdate+30,'N')";
 			}		
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, member.getMemberId());
@@ -82,7 +82,7 @@ public class MemberDAO extends DAO{
 		int result = 0;		
 		try {
 			conn();
-			String sql = "INSERT INTO member VALUES(member_memberno_seq.NEXTVAL,?,?,?,?,null,null,'A')";
+			String sql = "INSERT INTO member VALUES((SELECT NVL(MAX(member_no),0)+1 FROM member),?,?,?,?,null,null,'A')";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, member.getMemberId());
 			pstmt.setString(2, member.getMemberPw());
@@ -279,11 +279,6 @@ public class MemberDAO extends DAO{
 				
 			} else if(num==4) {
 				
-//				sql = "SELECT * FROM seat WHERE seat_use = 'Y' OR seat_use = 'N' ";
-//				pstmt = conn.prepareStatement(sql);
-//				pstmt.setString(1, id);
-//				rs = pstmt.executeQuery();
-	
 				sql = "UPDATE seat\r\n"
 						+ "SET seat_use = 'N', member_id = null\r\n"
 						+ "WHERE member_id = ?";

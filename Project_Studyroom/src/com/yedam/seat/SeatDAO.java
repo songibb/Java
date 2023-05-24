@@ -87,73 +87,28 @@ public class SeatDAO extends DAO{
 	
 
 	
-	//30개의 좌석 만들기
-//	public int settingSeat() {
-//		int result = 0;
-//		try {
-//			conn();
-//			String sql="";
-//			for(int i = 1; i<=30; i++) {
-//				sql = "INSERT INTO seat VALUES (i,'N',null)";
-//				pstmt = conn.prepareStatement(sql);
-//				result = pstmt.executeUpdate();
-//			}
-//		}catch(Exception e){
-//			e.printStackTrace();
-//		}finally {
-//			disconn();
-//		}
-//		return result;
-//	}
+	
 	
 	//좌석 등록
 	public int insertSeat(Seat seat) {
 		int result = 0;
 		try {
 			conn();
-			String sql = "SELECT * FROM seat";
+			String sql = "MERGE INTO seat\r\n" + 
+						"USING DUAL \r\n" + 
+						"ON (seat_no = ?)\r\n" + 
+						"WHEN MATCHED THEN\r\n" + 
+						"UPDATE SET seat_use = 'Y', member_id = ?\r\n" + 
+						"WHEN NOT MATCHED THEN\r\n" + 
+						"INSERT (seat_no,seat_use,member_id) \r\n" + 
+						"VALUES (?,'Y',?)";
+			
 			pstmt = conn.prepareStatement(sql);
-			rs = pstmt.executeQuery();
-			System.out.println(rs);
-			
-			sql = "UPDATE seat SET seat_use = 'Y', member_id = ? WHERE seat_no = ? ";
-			pstmt = conn.prepareStatement(sql);		
-			pstmt.setString(1, seat.getMemberId());
-			pstmt.setInt(2, seat.getSeatNo());
+			pstmt.setInt(1, seat.getSeatNo());
+			pstmt.setString(2, seat.getMemberId());
+			pstmt.setInt(3, seat.getSeatNo());
+			pstmt.setString(4, seat.getMemberId());
 			result = pstmt.executeUpdate();
-			
-
-//			if(rs.next() == false) {
-//				sql = "INSERT INTO seat VALUES (?,'Y',?)";
-//				pstmt = conn.prepareStatement(sql);
-//				pstmt.setInt(1, seat.getSeatNo());
-//				pstmt.setString(2, seat.getMemberId());
-//				result = pstmt.executeUpdate();
-//			} else {
-//				
-//				
-//			}
-//			while() {
-//				seat = new Seat();
-//				seat.setSeatNo(rs.getInt("seat_no"));
-//				sql = " INSERT INTO seat VALUES (?,'Y',?)";
-//				pstmt = conn.prepareStatement(sql);
-//				pstmt.setInt(1, seat.getSeatNo());
-//				pstmt.setString(2, seat.getMemberId());
-//				result = pstmt.executeUpdate();
-//			}
-//			
-//			if(seat.getSeatNo()>=1 && seat.getSeatNo()<=30) {
-//				sql = "UPDATE seat SET seat_use = 'Y', member_id = ? WHERE seat_no = ? ";
-//				pstmt = conn.prepareStatement(sql);		
-//				pstmt.setString(1, seat.getMemberId());
-//				pstmt.setInt(2, seat.getSeatNo());
-//				result = pstmt.executeUpdate();
-//			}else {
-//				
-//			}
-			
-			
 
 		}catch(Exception e) {
 			e.printStackTrace();
@@ -165,7 +120,25 @@ public class SeatDAO extends DAO{
 	
 	
 	//좌석 해지
-	
+	public int deleteSeat(Seat seat) {
+		int result = 0;
+		try {
+			conn();
+			//String sql = "DELETE FROM seat WHERE member_id = ?";
+			String sql = "UPDATE seat SET seat_no = ?, seat_use = 'N', member_id = null WHERE member_id = ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, seat.getSeatNo());
+			pstmt.setString(2, seat.getMemberId());
+			result = pstmt.executeUpdate();
+			
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			disconn();
+		}
+		return result;
+	}
 	
 	
 	
