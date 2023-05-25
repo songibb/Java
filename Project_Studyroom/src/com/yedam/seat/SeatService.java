@@ -54,39 +54,39 @@ public class SeatService {
 	//좌석 배치 현황
 	
 	public void setting(){
-		int[][] seatArr = new int[4][5];
+		String[][] seatArr = new String[4][5];
 		int i, j, plus; 
 	    plus = 0;
 	    for (i = 0; i <= 3; i++){
 	    	for(j = 0; j <=4; j++) {	
-	    		seatArr[i][j]= plus;
+	    		seatArr[i][j]= "□";	    		
 	    		plus = plus+1;
-	    		int seatNum = seatArr[i][j];
-	    		System.out.print((seatNum+1)  + "\t");
+	    		String seatNum = seatArr[i][j];
+	    		System.out.print((seatNum)  + "\t");
 	    	}
 	        System.out.println();
 	    }
 	}
 	
-	public void nowSeat() {
-		
+	public void nowSeat() {	
 		System.out.println("[좌석 배치 현황]");
 		List<Seat> list = SeatDAO.getInstance().getSeatList();	
 		for(Seat seat : list) {
 			String[][] seatArr = new String[4][5];
-			for (int i = 0; i <= 3; i++){
-		    	for(int j = 0; j <=4; j++) {
+			for (int i = 0; i < seatArr.length; i++){		
+		    	for(int j = 0; j < seatArr[i].length; j++) {	
 		    		if(seat.getSeatRow()==i && seat.getSeatColumn()==j) {
 		    			if(seat.getSeatUse().equals("Y")) {    	    		
-		    				seatArr[i][j] = "■ \t";
-		    				System.out.print(seatArr[i][j]);
+		    				seatArr[i][j] = " ■ \t";
+		    				System.out.print(seat.getSeatNo()+seatArr[i][j]);
 		    			} else if(seat.getSeatUse().equals("N")) {
-		    				seatArr[i][j] = "□ \t";
-		    				System.out.print(seatArr[i][j]);
+		    				seatArr[i][j] = " □ \t";
+		    				System.out.print(seat.getSeatNo()+seatArr[i][j]);
 		    			}
 		    		}
 		    	}
 		    }
+
 		}
 		System.out.println();
 	}
