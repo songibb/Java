@@ -204,9 +204,9 @@ public class MemberDAO extends DAO{
 		Member member = null;
 		try {
 			conn();
-			String sql = "SELECT *\r\n" + 
-					"FROM member\r\n" + 
-					"WHERE member_enddate = TO_DATE(sysdate, 'YY-MM-DD')";
+			String sql = "SELECT *\r\n"
+					+ "FROM member m JOIN seat s ON m.member_id = s.member_id\r\n"
+					+ "WHERE TO_CHAR(m.member_enddate) = TO_CHAR(sysdate)";
 			pstmt = conn.prepareStatement(sql);
 			rs = pstmt.executeQuery();
 			
@@ -217,16 +217,10 @@ public class MemberDAO extends DAO{
 				member.setMemberPw(rs.getString("member_pw"));
 				member.setMemberName(rs.getString("member_name"));
 				member.setMemberTel(rs.getString("member_tel"));
+				member.setSeatNo(rs.getInt("seat_no"));
 				list.add(member);
 			}
-			
-			//만료회원 변경
-			String sql2 = "UPDATE seat SET seat_use = 'N', member_id = null WHERE member_id = ?";
-			pstmt = conn.prepareStatement(sql2);
-			for(Member mem : list) {
-				pstmt.setString(1, mem.getMemberId());
-				result = pstmt.executeUpdate();
-			}
+		
 		
 		} catch(Exception e) {
 			e.printStackTrace();
@@ -275,29 +269,8 @@ public class MemberDAO extends DAO{
 				}	
 				pstmt = conn.prepareStatement(sql2);
 				pstmt.setString(1, member.getMemberId());
-				result = pstmt.executeUpdate();
-				
-			} else if(num==4) {
-				
-				sql = "UPDATE seat\r\n"
-						+ "SET seat_use = 'N', member_id = null\r\n"
-						+ "WHERE member_id = ?";
-				pstmt = conn.prepareStatement(sql);
-				pstmt.setString(1, seat.getMemberId());
-				result = pstmt.executeUpdate();
-				
-				String sql2 = "UPDATE seat\r\n"
-						+ "SET seat_use = 'Y', member_id = ?\r\n"
-						+ "WHERE seat_no = ?";
-				pstmt = conn.prepareStatement(sql2);
-				pstmt.setString(1, seat.getMemberId());
-				pstmt.setInt(2, seat.getSeatNo());
-				result = pstmt.executeUpdate();	
-
-				
-			} else if(num==5) {
-				
-			}
+				result = pstmt.executeUpdate();				
+			} 
 		}catch(Exception e) {
 			e.printStackTrace();
 		}finally {

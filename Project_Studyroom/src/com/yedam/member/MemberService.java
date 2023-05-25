@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Scanner;
 
 import com.yedam.seat.Seat;
+import com.yedam.seat.SeatDAO;
 
 public class MemberService {
 	
@@ -167,8 +168,10 @@ public class MemberService {
 			System.out.println("비밀번호 : " + list.get(i).getMemberPw());
 			System.out.println("이름 : " + list.get(i).getMemberName());
 			System.out.println("연락처 : " + list.get(i).getMemberTel());
+			System.out.println("좌석번호 : " + list.get(i).getSeatNo());
 			System.out.println("========================🧡 ");
 		}
+		
 	}
 	
 	
@@ -216,28 +219,6 @@ public class MemberService {
 		update2();
 	}
 	
-	//좌석 수정 
-	public void updateSeat() {		
-		update1();
-		num = 4;	
-		int seatNo = 0;
-		while(true) {
-			System.out.println("수정 좌석번호>");
-			seatNo = Integer.parseInt(sc.nextLine());
-			if(seatNo > 30) {
-				System.out.println("존재하지 않는 좌석입니다.");
-			} else {
-				System.out.println("좌석이 선택되었습니다.");
-				break;
-			}
-		}
-		seat.setSeatNo(seatNo);
-		update2();		
-	}
-		
-	public void updateLocker() {
-		
-	}
 
 	public void update1() {
 		System.out.println("[회원 정보 수정]");
