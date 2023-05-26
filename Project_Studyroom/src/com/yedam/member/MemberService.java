@@ -38,15 +38,11 @@ public class MemberService {
 	
 	//회원가입
 	Member mem = new Member();
-	int day = 0;
+	
 	
 	public void insertNormal() {
 		insertMember();
-		System.out.println("기간 선택> 1) 1일 | 2) 7일 | 3) 30일");
-		day = Integer.parseInt(sc.nextLine());
-		
-		int result = MemberDAO.getInstance().insertNormal(mem, day);
-		
+		int result = MemberDAO.getInstance().insertNormal(mem);		
 		if(result>0) {
 			System.out.println("회원가입을 성공하였습니다.");
 		} else {
@@ -57,7 +53,6 @@ public class MemberService {
 	public void insertAdmin() {
 		insertMember();
 		int result = MemberDAO.getInstance().insertAdmin(mem);
-	
 		if(result>0) {
 			System.out.println("회원가입을 성공하였습니다.");
 		} else {
@@ -83,14 +78,21 @@ public class MemberService {
 		String pw = sc.nextLine();
 		System.out.println("이름>");
 		String name = sc.nextLine();
-		System.out.println("연락처>");
-		String tel = sc.nextLine();
-
+		String tel = "";
+		while(true) {
+			System.out.println("연락처 >");
+			tel = sc.nextLine();
+			if(tel.length() > 13) {
+				System.out.println("올바른 연락처 양식을 입력해주세요.");
+			} else {
+				System.out.println("연락처 확인되었습니다.");
+				break;
+			}
+		}
 		mem.setMemberId(id);
 		mem.setMemberPw(pw);
 		mem.setMemberName(name);
 		mem.setMemberTel(tel);
-
 	}
 	
 	
@@ -104,19 +106,24 @@ public class MemberService {
 		System.out.println("연락처 : " + member.getMemberTel());
 		//좌석
 		if(member.getSeatUse() != null) {
-			System.out.println("========================");
+			System.out.println("========================★");
 			System.out.println("좌석번호 : " + member.getSeatNo());
-			System.out.println("등록일 : " + member.getMemberStartdate());
-			System.out.println("만료일 : " + member.getMemberEnddate());
+			System.out.println("등록일 : " + member.getSeatStartdate());
+			System.out.println("만료일 : " + member.getSeatEnddate());
 		} 
 		//사물함
 		if(member.getLockerUse() != null) {
-			System.out.println("========================");
+			System.out.println("========================★");
 			System.out.println("사물함번호 : " + member.getLockerNo());
 			System.out.println("등록일 : " + member.getLockerStartdate());
 			System.out.println("만료일 : " + member.getLockerEnddate());
 		}
 		//예약
+		if(member.getReserveSeatDate() != null) {
+			System.out.println("========================★");
+			System.out.println("예약 좌석 번호 : " + member.getReserveSeatNo());
+			System.out.println("예약일 : " + member.getReserveSeatDate());
+		}
 
 
 	}
@@ -128,14 +135,13 @@ public class MemberService {
 		List<Member> list = MemberDAO.getInstance().getMemberList();
 		for(int i = 0; i<list.size(); i++) {
 			System.out.println("회원번호 : " + list.get(i).getMemberNo());
-			System.out.println("아이디 : " + list.get(i).getMemberId());
-			System.out.println("비밀번호 : " + list.get(i).getMemberPw());
-			System.out.println("이름 : " + list.get(i).getMemberName());
-			System.out.println("연락처 : " + list.get(i).getMemberTel());
-			System.out.println("등록일 : " + list.get(i).getMemberStartdate());
-			System.out.println("만료일 : " + list.get(i).getMemberEnddate());
+			System.out.println("아이디 : " + list.get(i).getMemberId() + ", 비밀번호 : " + list.get(i).getMemberPw());
+			System.out.println("이름 : " + list.get(i).getMemberName() + ", 연락처 : " + list.get(i).getMemberTel());
+			if(list.get(i).getMemberAuth().equals("N")) {
+				System.out.println("등록일 : " + list.get(i).getSeatStartdate() + ", 만료일 : " + list.get(i).getSeatEnddate());
+			}
 			System.out.println("권한 : " + (list.get(i).getMemberAuth().equals("N") ? "일반사용자" : "관리자"));
-			System.out.println("========================🧡 ");
+			System.out.println("==================================================================🧡");
 		}
 		
 	}	
@@ -152,12 +158,10 @@ public class MemberService {
 			System.out.println("조회하신 회원이 존재하지 않습니다.");
 		} else {
 			System.out.println("회원번호 : " + member.getMemberNo());
-			System.out.println("아이디 : " + member.getMemberId());
-			System.out.println("비밀번호 : " + member.getMemberPw());
+			System.out.println("아이디 : " + member.getMemberId() + ", 비밀번호 : " + member.getMemberPw());
 			System.out.println("이름 : " + member.getMemberName());
-			System.out.println("연락처 : " + member.getMemberTel());
-			System.out.println("등록일 : " + member.getMemberStartdate());
-			System.out.println("만료일 : " + member.getMemberEnddate());
+			System.out.println("연락처 : " + member.getMemberTel());	
+			System.out.println("등록일 : " + member.getSeatStartdate() + ", 만료일 : " + member.getSeatEnddate()); 
 			System.out.println("권한 : " + (member.getMemberAuth().equals("N") ? "일반사용자" : "관리자"));
 			
 		}
@@ -169,12 +173,10 @@ public class MemberService {
 		List<Member> list = MemberDAO.getInstance().endMemberList();
 		for(int i = 0; i<list.size(); i++) {
 			System.out.println("회원번호 : " + list.get(i).getMemberNo());
-			System.out.println("아이디 : " + list.get(i).getMemberId());
-			System.out.println("비밀번호 : " + list.get(i).getMemberPw());
-			System.out.println("이름 : " + list.get(i).getMemberName());
-			System.out.println("연락처 : " + list.get(i).getMemberTel());
+			System.out.println("아이디 : " + list.get(i).getMemberId() + ", 비밀번호 : " + list.get(i).getMemberPw());
+			System.out.println("이름 : " + list.get(i).getMemberName() + ", 연락처 : " + list.get(i).getMemberTel());
 			System.out.println("좌석번호 : " + list.get(i).getSeatNo());
-			System.out.println("========================🧡 ");
+			System.out.println("==================================================================🧡");
 		}
 		
 	}
@@ -199,12 +201,11 @@ public class MemberService {
 		num = 2;
 		String tel = "";
 		while(true) {
-			System.out.println("수정 연락처>");
+			System.out.println("수정 연락처 (010-XXXX-XXXX)>");
 			tel = sc.nextLine();
 			if(tel.length() > 13) {
 				System.out.println("올바른 연락처 양식을 입력해주세요.");
 			} else {
-				System.out.println("연락처 확인되었습니다.");
 				break;
 			}
 		}
@@ -212,6 +213,7 @@ public class MemberService {
 		update2();
 	}	
 	
+	int day = 0;
 	public void updateStartdate() {
 		update1();
 		num = 3;
@@ -221,15 +223,10 @@ public class MemberService {
 			if(date.length()!=10) {
 				System.out.println("날짜 양식에 맞춰 입력해주세요.");		
 			} else {
-				member.setMemberStartdate(Date.valueOf(date));
+				seat.setSeatStartdate(Date.valueOf(date));
 				break;
 			}
-
 		}
-//		System.out.println("수정 등록일 (YYYY-MM-DD)>");
-//		Date date = Date.valueOf(sc.nextLine());
-//		member.setMemberStartdate(date);
-
 		System.out.println("기간 선택> 1) 1일 | 2) 7일 | 3) 30일");
 		day = Integer.parseInt(sc.nextLine());	
 		update2();

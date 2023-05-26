@@ -16,9 +16,7 @@ public class Member {
 //	MEMBER_ID        NOT NULL VARCHAR2(20) 
 //	MEMBER_PW                 VARCHAR2(20) 
 //	MEMBER_NAME      NOT NULL VARCHAR2(12) 
-//	MEMBER_TEL                VARCHAR2(15) 
-//	MEMBER_STARTDATE          DATE         
-//	MEMBER_ENDDATE            DATE         
+//	MEMBER_TEL                VARCHAR2(15)   
 //	MEMBER_AUTH               CHAR(1)    
 
 	private int memberNo;
@@ -26,17 +24,20 @@ public class Member {
 	private String memberPw;
 	private String memberName;
 	private String memberTel;
-	private Date memberStartdate;
-	private Date memberEnddate;
 	private String memberAuth;
 	
 	private int seatNo;
+	private Date seatStartdate;
+	private Date seatEnddate;
 	private String seatUse;
 	
 	private int lockerNo;
 	private String lockerUse;
 	private Date lockerStartdate;
 	private Date lockerEnddate; 
+	
+	private int reserveSeatNo;
+	private Date reserveSeatDate;
 	
 	
 }

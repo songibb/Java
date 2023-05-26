@@ -1,5 +1,7 @@
 package com.yedam.seat;
 
+import java.sql.Date;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,6 +16,8 @@ public class Seat {
 
 	private int seatNo;
 	private String seatUse;
+	private Date seatStartdate;
+	private Date seatEnddate;
 	private String memberId;
 	
 	private String memberName;

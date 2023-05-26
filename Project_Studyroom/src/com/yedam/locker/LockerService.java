@@ -11,12 +11,12 @@ public class LockerService {
 	
 	//locker테이블에 자리 만들기
 	public void lockerSetting() {
-		System.out.println("[사물함을 놓고 있습니다.]");
+		System.out.println("[사물함을 놓고 있습니다  ଘ(੭ꆤᴗꆤ)━☆ﾟ.*･]");
 		int result = LockerDAO.getInstance().lockerSetting();		
 		if(result > 0) {
-			System.out.println("셋팅 완료");
+			System.out.println("배치 완료  ");
 		}else {
-			System.out.println("셋팅 실패");
+			System.out.println("배치 실패");
 		}
 	}
 	
@@ -29,12 +29,11 @@ public class LockerService {
 			System.out.println("사물함 번호 : " + locker.getLockerNo());
 			System.out.println("사물함 상태 : " + (locker.getLockerUse().equals("Y") ? "사용중" : "사용가능"));
 			if(locker.getLockerUse().equals("Y")) {
-				System.out.println("아이디 : " + locker.getMemberId());
-				System.out.println("이름 : " + locker.getMemberName());
+				System.out.println("아이디 : " + locker.getMemberId() + ", 이름 : " + locker.getMemberName());
 				System.out.println("사물함 등록일 :" + locker.getLockerStartdate() + ", 사물함 만료일 : " + locker.getLockerEnddate());
 				System.out.println("좌석 등록일 : " + locker.getMemberStartdate() + ", 좌석 만료일 : " + locker.getMemberEnddate());
 			}
-			System.out.println("========================🧡 ");
+			System.out.println("==================================================================🧡");
 		}
 	}
 	
@@ -47,7 +46,7 @@ public class LockerService {
 				System.out.println(locker.getLockerNo()+ " : " +(locker.getLockerUse().equals("Y") ? "사용중" : "사용가능") );
 			}
 		} else if(list.size()==0) {
-			System.out.println("빈 사물함이 없습니다. 예약하시기 바랍니다.");
+			System.out.println("빈 사물함이 없습니다. 사물함을 이용하실 수 없습니다.");
 		}
 	}
 	
@@ -109,7 +108,7 @@ public class LockerService {
 		if(result > 0) {
 			System.out.println("금일 기간만료 사물함이 전부 해지되었습니다.");
 		}else {
-			System.out.println("금일 기간만료 사물함이 해지되지 않았습니다.");
+			System.out.println("금일 기간만료 사물함이 없습니다.");
 		}
 	}
 	

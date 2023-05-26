@@ -119,7 +119,6 @@ public class LockerDAO extends DAO{
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, locker.getMemberId());
 			pstmt.setInt(2, locker.getLockerNo());
-
 			result = pstmt.executeUpdate();
 		} catch(Exception e) {
 			e.printStackTrace();
@@ -136,7 +135,7 @@ public class LockerDAO extends DAO{
 		try {
 			conn();
 			String sql = "UPDATE locker \r\n"
-					+ "SET locker_no = (SELECT locker_no FROM locker WHERE  member_id = ?), locker_use = 'N', locker_startdate = null, locker_enddate = null, member_id = null\r\n"
+					+ "SET locker_no = (SELECT locker_no FROM locker WHERE member_id = ?), locker_use = 'N', locker_startdate = null, locker_enddate = null, member_id = null\r\n"
 					+ "WHERE member_id = ?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, locker.getMemberId());
@@ -158,7 +157,7 @@ public class LockerDAO extends DAO{
 		Locker locker = null;
 		try {
 			conn();
-			String sql = "SELECT * FROM locker WHERE TO_CHAR(locker_enddate) = TO_CHAR(sysdate)";
+			String sql = "SELECT * FROM locker WHERE TO_CHAR(locker_enddate) <= TO_CHAR(sysdate)";
 			pstmt = conn.prepareStatement(sql);
 			rs = pstmt.executeQuery();
 			

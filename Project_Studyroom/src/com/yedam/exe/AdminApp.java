@@ -24,10 +24,10 @@ public class AdminApp {
 	private void adminMenu() {
 		boolean flag = true;
 		while(flag) {
-			System.out.println("--------------------------------------------------------------");
+			System.out.println("-------------------------------------------------------------------");
 			System.out.println("[관리자 메뉴]");
 			System.out.println("1. 회원 관리 | 2. 좌석 관리 | 3. 사물함 관리 | 4. 예약 관리 | 5. 로그아웃");
-			System.out.println("--------------------------------------------------------------");
+			System.out.println("-------------------------------------------------------------------");
 			System.out.println("입력>");
 			int menu = Integer.parseInt(sc.nextLine());
 			switch(menu) {
@@ -63,10 +63,10 @@ public class AdminApp {
 	private void memberMenu() {
 		boolean flag = true;
 		while(flag) {
-			System.out.println("--------------------------------------------------------------");
+			System.out.println("-------------------------------------------------------------------");
 			System.out.println("[회원 관리]");
 			System.out.println("1. 회원 조회 | 2. 회원 수정 | 3. 회원 삭제 | 4. 뒤로 가기");
-			System.out.println("--------------------------------------------------------------");
+			System.out.println("-------------------------------------------------------------------");
 			System.out.println("입력>");
 			int menu = Integer.parseInt(sc.nextLine());
 			switch(menu) {
@@ -86,8 +86,6 @@ public class AdminApp {
 				System.out.println("메뉴를 잘못 입력하였습니다.");
 			}
 		}
-		
-		
 	}
 	
 	
@@ -95,10 +93,10 @@ public class AdminApp {
 	private void getMemberInfo() {
 		boolean flag = true;
 		while(flag) {
-			System.out.println("--------------------------------------------------------------");
+			System.out.println("-------------------------------------------------------------------");
 			System.out.println("[회원 조회]");
 			System.out.println("1. 전체 회원 | 2. 개별 회원 | 3. 금일 만료 회원 | 4. 뒤로 가기");
-			System.out.println("--------------------------------------------------------------");
+			System.out.println("-------------------------------------------------------------------");
 			System.out.println("입력>");
 			int menu = Integer.parseInt(sc.nextLine());
 			switch(menu) {
@@ -125,10 +123,10 @@ public class AdminApp {
 	private void updateMember() {
 		boolean flag = true;
 		while(flag) {
-			System.out.println("--------------------------------------------------------------");
+			System.out.println("-------------------------------------------------------------------");
 			System.out.println("[회원 수정]");
 			System.out.println("1. 비밀번호 | 2. 연락처 | 3. 기간만료 연장 | 4. 뒤로 가기");
-			System.out.println("--------------------------------------------------------------");
+			System.out.println("-------------------------------------------------------------------");
 			System.out.println("입력>");
 			int menu = Integer.parseInt(sc.nextLine());
 			switch(menu) {
@@ -154,10 +152,10 @@ public class AdminApp {
 	private void seatMenu() {
 		boolean flag = true;
 		while(flag) {
-			System.out.println("--------------------------------------------------------------");
+			System.out.println("-------------------------------------------------------------------");
 			System.out.println("[좌석 관리]");
 			System.out.println("1. 좌석 조회 | 2. 좌석 등록 | 3. 좌석 해지 | 4. 만료 좌석 해지 | 5. 뒤로 가기");
-			System.out.println("--------------------------------------------------------------");
+			System.out.println("-------------------------------------------------------------------");
 			System.out.println("입력>");
 			int menu = Integer.parseInt(sc.nextLine());
 			switch(menu) {
@@ -185,10 +183,10 @@ public class AdminApp {
 	private void getSeatInfo() {
 		boolean flag = true;
 		while(flag) {
-			System.out.println("--------------------------------------------------------------");
+			System.out.println("-------------------------------------------------------------------");
 			System.out.println("[좌석 조회]");
 			System.out.println("1. 전체 좌석 | 2. 미사용 좌석 | 3. 좌석 배치도 | 4. 뒤로 가기");
-			System.out.println("--------------------------------------------------------------");
+			System.out.println("-------------------------------------------------------------------");
 			System.out.println("입력>");
 			int menu = Integer.parseInt(sc.nextLine());
 			switch(menu) {
@@ -213,10 +211,10 @@ public class AdminApp {
 	private void lockerMenu() {
 		boolean flag = true;
 		while(flag) {
-			System.out.println("--------------------------------------------------------------");
+			System.out.println("-------------------------------------------------------------------");
 			System.out.println("[사물함 관리]");
 			System.out.println("1. 사물함 조회 | 2. 사물함 등록 | 3. 사물함 해지 | 4. 만료 사물함 해지 | 5. 뒤로 가기");
-			System.out.println("--------------------------------------------------------------");
+			System.out.println("-------------------------------------------------------------------");
 			System.out.println("입력>");
 			int menu = Integer.parseInt(sc.nextLine());
 			switch(menu) {
@@ -244,10 +242,10 @@ public class AdminApp {
 	private void getLockerInfo() {
 		boolean flag = true;
 		while(flag) {
-			System.out.println("--------------------------------------------------------------");
+			System.out.println("-------------------------------------------------------------------");
 			System.out.println("[사물함 조회]");
 			System.out.println("1. 전체 사물함 | 2. 미사용 사물함 | 3. 사물함 배치도 | 4. 뒤로 가기");
-			System.out.println("--------------------------------------------------------------");
+			System.out.println("-------------------------------------------------------------------");
 			System.out.println("입력>");
 			int menu = Integer.parseInt(sc.nextLine());
 			switch(menu) {
@@ -272,10 +270,10 @@ public class AdminApp {
 	private void reserveMenu() {
 		boolean flag = true;
 		while(flag) {
-			System.out.println("--------------------------------------------------------------");
+			System.out.println("-------------------------------------------------------------------");
 			System.out.println("[좌석 예약 관리]");
 			System.out.println("1. 예약 조회 | 2. 예약날짜별 조회 | 3. 예약 등록 | 4. 예약 취소 | 5. 뒤로 가기");
-			System.out.println("--------------------------------------------------------------");
+			System.out.println("-------------------------------------------------------------------");
 			System.out.println("입력>");
 			int menu = Integer.parseInt(sc.nextLine());
 			switch(menu) {

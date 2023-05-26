@@ -29,7 +29,7 @@ public class SeatDAO extends DAO{
 			String sql="";
 			for(int i = 1; i<=20; i++) {		
 				sql = "INSERT INTO seat\r\n"
-						+ "VALUES(?, 'N',null)";
+						+ "VALUES(?,'N',null,null,null)";
 				pstmt = conn.prepareStatement(sql);
 				pstmt.setInt(1, i);
 				result = pstmt.executeUpdate();	
@@ -50,7 +50,7 @@ public class SeatDAO extends DAO{
 		Seat seat = null;
 		try {
 			conn();
-			String sql = "SELECT s.seat_no, s.seat_use, m.member_id, m.member_name, (m.member_enddate-sysdate) AS \"남은 기간\"\r\n"
+			String sql = "SELECT s.seat_no, s.seat_use, m.member_id, m.member_name, (s.seat_enddate-sysdate) AS \"남은 기간\"\r\n"
 					+ "FROM seat s LEFT JOIN member m \r\n"
 					+ "ON s.member_id = m.member_id\r\n"
 					+ "ORDER BY 1";
@@ -102,19 +102,28 @@ public class SeatDAO extends DAO{
 	
 
 	//좌석 등록
-	public int insertSeat(Seat seat) {
+	public int insertSeat(Seat seat, int day) {
 		int result = 0;
 		try {
 			conn();
-			String sql = "UPDATE seat\r\n"
-					+ "SET seat_use = 'Y', member_id = ?\r\n"
-					+ "WHERE seat_no = ?";
-			
+			String sql = "";
+			if(day==1) {
+				sql = "UPDATE seat\r\n"
+						+ "SET seat_use = 'Y', seat_startdate = sysdate, seat_enddate = sysdate+1, member_id = ?\r\n"
+						+ "WHERE seat_no = ?";
+			} else if(day==2) {
+				sql = "UPDATE seat\r\n"
+						+ "SET seat_use = 'Y', seat_startdate = sysdate, seat_enddate = sysdate+7, member_id = ?\r\n"
+						+ "WHERE seat_no = ?";
+			} else if(day==3) { 
+				sql = "UPDATE seat\r\n"
+						+ "SET seat_use = 'Y', seat_startdate = sysdate, seat_enddate = sysdate+30, member_id = ?\r\n"
+						+ "WHERE seat_no = ?";
+			}	
 			pstmt = conn.prepareStatement(sql);			
 			pstmt.setString(1, seat.getMemberId());
 			pstmt.setInt(2, seat.getSeatNo());
 			result = pstmt.executeUpdate();
-
 		}catch(Exception e) {
 			e.printStackTrace();
 		}finally {
@@ -130,8 +139,8 @@ public class SeatDAO extends DAO{
 		try {
 			conn();
 			String sql = "UPDATE seat\r\n"
-					+ "SET seat_no = (SELECT seat_no FROM seat WHERE  member_id = ?), \r\n"
-					+ "seat_use = 'N', member_id = null\r\n"
+					+ "SET seat_no = (SELECT seat_no FROM seat WHERE member_id = ?), \r\n"
+					+ "seat_use = 'N', seat_startdate = null, seat_enddate = null, member_id = null\r\n"
 					+ "WHERE member_id = ?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, seat.getMemberId());

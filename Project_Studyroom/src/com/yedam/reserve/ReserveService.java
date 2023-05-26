@@ -15,9 +15,9 @@ public class ReserveService {
 		List<Reserve> list = ReserveDAO.getInstance().getReserveSeat();
 		
 		for(Reserve res : list) {
-			System.out.println("예약한 좌석 번호 : " + res.getReserveSeatNo() + " , 예약일 : " + res.getReserveSeatDate() 
-								+ " , 아이디 : " + res.getMemberId() + " , 이름 : " + res.getMemberName());
-			System.out.println("==============================================================🧡");
+			System.out.println("예약한 좌석 번호 : " + res.getReserveSeatNo() + ", 예약일 : " + res.getReserveSeatDate() 
+								+ ", 아이디 : " + res.getMemberId() + ", 이름 : " + res.getMemberName());
+			System.out.println("==================================================================🧡");
 		}
 	}
 	
@@ -33,9 +33,9 @@ public class ReserveService {
 			if(list == null) {
 				System.out.println("조회하신 날짜에는 예약이 없습니다.");
 			} else {
-				System.out.println("예약한 좌석 번호 : " + res.getReserveSeatNo() + " , 예약일 : " + res.getReserveSeatDate() 
-									+ " , 아이디 : " + res.getMemberId() + " , 이름 : " + res.getMemberName());
-				System.out.println("==============================================================🧡");
+				System.out.println("예약한 좌석 번호 : " + res.getReserveSeatNo() + ", 예약일 : " + res.getReserveSeatDate() 
+									+ ", 아이디 : " + res.getMemberId() + ", 이름 : " + res.getMemberName());
+				System.out.println("==================================================================🧡");
 			}			
 		}	
 	}
@@ -54,9 +54,17 @@ public class ReserveService {
 		while(flag) {	
 			System.out.println("예약 좌석 번호>");
 			int seatNo = Integer.parseInt(sc.nextLine());
-			System.out.println("예약 등록일 (YYYY-MM-DD)>");
-			Date seatDate = Date.valueOf(sc.nextLine());		
-			
+			Date seatDate;
+			while(true) {
+				System.out.println("예약 등록일 (YYYY-MM-DD)>");
+				String date = sc.nextLine();
+				if(date.length()!=10) {
+					System.out.println("날짜 양식에 맞춰 입력해주세요.");		
+				} else {
+					seatDate = Date.valueOf(sc.nextLine());	
+					break;
+				}
+			}
 			List<Reserve> list = ReserveDAO.getInstance().getReserveDate(seatDate);
 
 			for(Reserve rese : list) {

@@ -31,6 +31,7 @@ public class MemberDAO extends DAO{
 					+ "FROM member m \r\n"
 					+ "LEFT JOIN seat s ON m.member_id = s.member_id\r\n"
 					+ "LEFT JOIN locker l ON m.member_id = l.member_id\r\n"
+					+ "LEFT JOIN reserveseat r ON m.member_id = r.member_id\r\n"
 					+ "WHERE m.member_id = ? \r\n";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, id);
@@ -42,15 +43,17 @@ public class MemberDAO extends DAO{
 				member.setMemberPw(rs.getString("member_pw"));
 				member.setMemberName(rs.getString("member_name"));
 				member.setMemberTel(rs.getString("member_tel"));
-				member.setMemberStartdate(rs.getDate("member_startdate"));
-				member.setMemberEnddate(rs.getDate("member_enddate"));
 				member.setMemberAuth(rs.getString("member_auth"));
 				member.setSeatNo(rs.getInt("seat_no"));
 				member.setSeatUse(rs.getString("seat_use"));
+				member.setSeatStartdate(rs.getDate("seat_startdate"));
+				member.setSeatEnddate(rs.getDate("seat_enddate"));
 				member.setLockerNo(rs.getInt("locker_no"));
 				member.setLockerUse(rs.getString("locker_use"));
 				member.setLockerStartdate(rs.getDate("locker_startdate"));
 				member.setLockerEnddate(rs.getDate("locker_enddate"));
+				member.setReserveSeatNo(rs.getInt("reserve_seat_no"));
+				member.setReserveSeatDate(rs.getDate("reserve_seat_date"));
 			}
 		} catch(Exception e) {
 			e.printStackTrace();
@@ -62,18 +65,11 @@ public class MemberDAO extends DAO{
 	
 	
 	//회원가입	
-	public int insertNormal(Member member, int day) {
+	public int insertNormal(Member member) {
 		int result = 0;		
 		try {
 			conn();
-			String sql = "";
-			if(day==1) {
-				sql = "INSERT INTO member VALUES((SELECT NVL(MAX(member_no),0)+1 FROM member),?,?,?,?,sysdate,sysdate+1,'N')";
-			} else if(day==2) {
-				sql = "INSERT INTO member VALUES((SELECT NVL(MAX(member_no),0)+1 FROM member),?,?,?,?,sysdate,sysdate+7,'N')";
-			} else if(day==3) { 
-				sql = "INSERT INTO member VALUES((SELECT NVL(MAX(member_no),0)+1 FROM member),?,?,?,?,sysdate,sysdate+30,'N')";
-			}		
+			String sql = "INSERT INTO member VALUES((SELECT NVL(MAX(member_no),0)+1 FROM member),?,?,?,?,sysdate,'N')";		
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, member.getMemberId());
 			pstmt.setString(2, member.getMemberPw());
@@ -92,7 +88,7 @@ public class MemberDAO extends DAO{
 		int result = 0;		
 		try {
 			conn();
-			String sql = "INSERT INTO member VALUES((SELECT NVL(MAX(member_no),0)+1 FROM member),?,?,?,?,null,null,'A')";
+			String sql = "INSERT INTO member VALUES((SELECT NVL(MAX(member_no),0)+1 FROM member),?,?,?,?,sysdate,'A')";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, member.getMemberId());
 			pstmt.setString(2, member.getMemberPw());
@@ -115,7 +111,9 @@ public class MemberDAO extends DAO{
 		Member member = null;
 		try {
 			conn();
-			String sql = "SELECT * FROM member ORDER BY member_no";
+			String sql = "SELECT *\r\n" + 
+					"FROM member m LEFT JOIN seat s ON m.member_id = s.member_id\r\n" + 
+					"ORDER BY member_no";
 			pstmt = conn.prepareStatement(sql);
 			rs = pstmt.executeQuery();
 			
@@ -126,8 +124,8 @@ public class MemberDAO extends DAO{
 				member.setMemberPw(rs.getString("member_pw"));
 				member.setMemberName(rs.getString("member_name"));
 				member.setMemberTel(rs.getString("member_tel"));
-				member.setMemberStartdate(rs.getDate("member_startdate"));
-				member.setMemberEnddate(rs.getDate("member_enddate"));
+				member.setSeatStartdate(rs.getDate("seat_startdate"));
+				member.setSeatEnddate(rs.getDate("seat_enddate"));
 				member.setMemberAuth(rs.getString("member_auth"));
 				list.add(member);
 			}
@@ -145,7 +143,9 @@ public class MemberDAO extends DAO{
 		Member member = null;
 		try {
 			conn();
-			String sql = "SELECT * FROM member WHERE member_id = ?";
+			String sql = "SELECT *\r\n" + 
+					"FROM member m LEFT JOIN seat s ON m.member_id = s.member_id\r\n" + 
+					"WHERE member_id = ?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, id);
 			rs = pstmt.executeQuery();
@@ -157,8 +157,8 @@ public class MemberDAO extends DAO{
 				member.setMemberPw(rs.getString("member_pw"));
 				member.setMemberName(rs.getString("member_name"));
 				member.setMemberTel(rs.getString("member_tel"));
-				member.setMemberStartdate(rs.getDate("member_startdate"));
-				member.setMemberEnddate(rs.getDate("member_enddate"));
+				member.setSeatStartdate(rs.getDate("seat_startdate"));
+				member.setSeatEnddate(rs.getDate("seat_enddate"));
 				member.setMemberAuth(rs.getString("member_auth"));
 			}
 		}catch(Exception e) {
@@ -177,8 +177,8 @@ public class MemberDAO extends DAO{
 		try {
 			conn();
 			String sql = "SELECT *\r\n"
-					+ "FROM member m JOIN seat s ON m.member_id = s.member_id\r\n"
-					+ "WHERE TO_CHAR(m.member_enddate) = TO_CHAR(sysdate)";
+					+ "FROM member m LEFT JOIN seat s ON m.member_id = s.member_id\r\n"
+					+ "WHERE TO_CHAR(s.seat_enddate) <= TO_CHAR(sysdate)";
 			pstmt = conn.prepareStatement(sql);
 			rs = pstmt.executeQuery();
 			
@@ -223,19 +223,19 @@ public class MemberDAO extends DAO{
 				pstmt.setString(2, member.getMemberId());
 				result = pstmt.executeUpdate();	
 			} else if(num==3) {
-				sql = "UPDATE member SET member_startdate = ? WHERE member_id = ?";
+				sql = "UPDATE seat SET seat_startdate = ? WHERE member_id = ?";
 				pstmt = conn.prepareStatement(sql);
-				pstmt.setDate(1, member.getMemberStartdate());
+				pstmt.setDate(1, seat.getSeatStartdate());
 				pstmt.setString(2, member.getMemberId());
 				result = pstmt.executeUpdate();
 				
 				String sql2 = "";
 				if(day==1) {
-					sql2 = "UPDATE member SET member_enddate = member_startdate + 1 WHERE member_id = ?";
+					sql2 = "UPDATE seat SET seat_enddate = seat_startdate+1 WHERE member_id = ?";
 				} else if(day==2) {
-					sql2 = "UPDATE member SET member_enddate = member_startdate + 7 WHERE member_id = ?";
+					sql2 = "UPDATE seat SET seat_enddate = seat_startdate+7 WHERE member_id = ?";
 				} else if(day==3) { 
-					sql2 = "UPDATE member SET member_enddate = member_startdate + 30 WHERE member_id = ?";
+					sql2 = "UPDATE seat SET seat_enddate = seat_startdate+30 WHERE member_id = ?";
 				}	
 				pstmt = conn.prepareStatement(sql2);
 				pstmt.setString(1, member.getMemberId());
