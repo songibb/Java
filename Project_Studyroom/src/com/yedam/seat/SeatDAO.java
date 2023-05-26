@@ -27,15 +27,12 @@ public class SeatDAO extends DAO{
 		try {
 			conn();
 			String sql="";
-			for(int i = 0; i<=3; i++) {
-				for(int j = 0; j<=4; j++) {
-					sql = "INSERT INTO seat\r\n"
-							+ "VALUES(seat_seatno_seq.NEXTVAL,?,?,'N',null)";
-					pstmt = conn.prepareStatement(sql);
-					pstmt.setInt(1, i);
-					pstmt.setInt(2, j);
-					result = pstmt.executeUpdate();	
-				}
+			for(int i = 1; i<=20; i++) {		
+				sql = "INSERT INTO seat\r\n"
+						+ "VALUES(?, 'N',null)";
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setInt(1, i);
+				result = pstmt.executeUpdate();	
 			}
 		}catch(Exception e) {
 			e.printStackTrace();
@@ -134,17 +131,12 @@ public class SeatDAO extends DAO{
 			conn();
 			String sql = "UPDATE seat\r\n"
 					+ "SET seat_no = (SELECT seat_no FROM seat WHERE  member_id = ?), \r\n"
-					+ "seat_row = (SELECT seat_row FROM seat WHERE  member_id = ?),\r\n"
-					+ "seat_column = (SELECT seat_column FROM seat WHERE  member_id = ?),\r\n"
 					+ "seat_use = 'N', member_id = null\r\n"
 					+ "WHERE member_id = ?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, seat.getMemberId());
 			pstmt.setString(2, seat.getMemberId());
-			pstmt.setString(3, seat.getMemberId());
-			pstmt.setString(4, seat.getMemberId());
-			result = pstmt.executeUpdate();
-			
+			result = pstmt.executeUpdate();			
 		}catch(Exception e) {
 			e.printStackTrace();
 		}finally {

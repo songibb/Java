@@ -27,7 +27,11 @@ public class MemberDAO extends DAO{
 		Member member = null;
 		try {
 			conn();
-			String sql = "SELECT * FROM member WHERE member_id = ?";
+			String sql = "SELECT *\r\n"
+					+ "FROM member m \r\n"
+					+ "LEFT JOIN seat s ON m.member_id = s.member_id\r\n"
+					+ "LEFT JOIN locker l ON m.member_id = l.member_id\r\n"
+					+ "WHERE m.member_id = ? \r\n";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, id);
 			rs = pstmt.executeQuery();
@@ -41,6 +45,12 @@ public class MemberDAO extends DAO{
 				member.setMemberStartdate(rs.getDate("member_startdate"));
 				member.setMemberEnddate(rs.getDate("member_enddate"));
 				member.setMemberAuth(rs.getString("member_auth"));
+				member.setSeatNo(rs.getInt("seat_no"));
+				member.setSeatUse(rs.getString("seat_use"));
+				member.setLockerNo(rs.getInt("locker_no"));
+				member.setLockerUse(rs.getString("locker_use"));
+				member.setLockerStartdate(rs.getDate("locker_startdate"));
+				member.setLockerEnddate(rs.getDate("locker_enddate"));
 			}
 		} catch(Exception e) {
 			e.printStackTrace();
@@ -95,44 +105,6 @@ public class MemberDAO extends DAO{
 			disconn();
 		}		
 		return result;
-	}
-	
-	
-	//내 정보 조회
-	public Member getInfo(String id) {
-		Member member = null;
-		try {
-			conn();
-			String sql = "SELECT *\r\n"
-					+ "FROM seat s \r\n"
-					+ "LEFT JOIN member m ON s.member_id = m.member_id\r\n"
-					//+ "LEFT JOIN locker l ON m.member_id = l.member_id\r\n"
-					+ "WHERE m.member_id = ? \r\n"
-					+ "ORDER BY 1";
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, id);
-			rs = pstmt.executeQuery();
-			
-			if(rs.next()) {
-				member = new Member();
-				member.setMemberId(rs.getString("member_id"));
-				member.setMemberPw(rs.getString("member_pw"));
-				member.setMemberName(rs.getString("member_name"));
-				member.setMemberTel(rs.getString("member_tel"));
-				member.setMemberStartdate(rs.getDate("member_startdate"));
-				member.setMemberEnddate(rs.getDate("member_enddate"));
-				member.setMemberAuth(rs.getString("member_auth"));
-				member.setSeatNo(rs.getInt("seat_no"));
-				//member.setLockerNo(rs.getInt("locker_no"));
-				//member.setLockerStartdate(rs.getDate("locker_startdate"));
-				//member.setLockerEnddate(rs.getDate("locker_Enddate"));
-			}
-		} catch(Exception e) {
-			e.printStackTrace();
-		} finally {
-			disconn();
-		}
-		return member;
 	}
 	
 	
@@ -220,8 +192,6 @@ public class MemberDAO extends DAO{
 				member.setSeatNo(rs.getInt("seat_no"));
 				list.add(member);
 			}
-		
-		
 		} catch(Exception e) {
 			e.printStackTrace();
 		} finally {

@@ -28,23 +28,25 @@ public class SeatService {
 		for(Seat seat : list) {
 			System.out.println("좌석 번호 : " + seat.getSeatNo());
 			System.out.println("좌석 상태 : " + (seat.getSeatUse().equals("Y") ? "사용중" : "사용가능"));
-			System.out.println("아이디 : " + (seat.getMemberId() == null ? "사용가능" : seat.getMemberId()));
-			System.out.println("이름 : " + (seat.getMemberName() == null ? "사용가능" : seat.getMemberName()));
-			System.out.println("남은 기간 : " + seat.getSeatPeriod() + "일");
+			if(seat.getSeatUse().equals("Y")) {
+				System.out.println("아이디 : " + seat.getMemberId());
+				System.out.println("이름 : " + seat.getMemberName());
+				System.out.println("남은 기간 : " + seat.getSeatPeriod() + "일");
+			}	
 			System.out.println("========================🧡 ");
 		}
 	}
-	
+
 	
 	//미사용 좌석 조회
 	public void getNoUseSeat() {	
 		System.out.println("[미사용 좌석 조회]");
 		List<Seat> list = SeatDAO.getInstance().getNoUseSeat();
-		if(list!=null) {
+		if(list.size()!=0) {
 			for(Seat seat : list) {
 				System.out.println(seat.getSeatNo()+ " : " +(seat.getSeatUse().equals("Y") ? "사용중" : "사용가능"));
 			}
-		} else {
+		} else if(list.size()==0) {
 			System.out.println("빈 좌석이 없습니다. 예약하시기 바랍니다.");
 		}
 	
@@ -52,46 +54,41 @@ public class SeatService {
 	
 	
 	//좌석 배치 현황
-	
-	public void setting(){
-		String[][] seatArr = new String[4][5];
-		int i, j, plus; 
-	    plus = 0;
-	    for (i = 0; i <= 3; i++){
-	    	for(j = 0; j <=4; j++) {	
-	    		seatArr[i][j]= "□";	    		
-	    		plus = plus+1;
-	    		String seatNum = seatArr[i][j];
-	    		System.out.print((seatNum)  + "\t");
-	    	}
-	        System.out.println();
-	    }
-	}
-	
 	public void nowSeat() {	
 		System.out.println("[좌석 배치 현황]");
+		System.out.println("사용중 : ■  사용가능 : □");
 		List<Seat> list = SeatDAO.getInstance().getSeatList();	
-		for(Seat seat : list) {
-			String[][] seatArr = new String[4][5];
-			for (int i = 0; i < seatArr.length; i++){		
-		    	for(int j = 0; j < seatArr[i].length; j++) {	
-		    		if(seat.getSeatRow()==i && seat.getSeatColumn()==j) {
-		    			if(seat.getSeatUse().equals("Y")) {    	    		
-		    				seatArr[i][j] = " ■ \t";
-		    				System.out.print(seat.getSeatNo()+seatArr[i][j]);
-		    			} else if(seat.getSeatUse().equals("N")) {
-		    				seatArr[i][j] = " □ \t";
-		    				System.out.print(seat.getSeatNo()+seatArr[i][j]);
-		    			}
-		    		}
-		    	}
-		    }
-
+		for(int i = 0; i<list.size();i++) {
+			System.out.print(list.get(i).getSeatUse().equals("Y") ? list.get(i).getSeatNo()+" ■ \t" :  list.get(i).getSeatNo()+" □ \t");
+			if((i+1) % 5 == 0) {
+				System.out.println();
+			}
 		}
-		System.out.println();
 	}
-	
-	
+		
+		//데이터를 배열에 다 넣은상태에서 사용
+//		for(Seat seat : list) {
+//			String[][] seatArr = new String[4][5];
+//			for (int i = 0; i < seatArr.length; i++){		
+//		    	for(int j = 0; j < seatArr[i].length; j++) {	
+//		    		if(seat.getSeatRow()==i && seat.getSeatColumn()==j) {
+////		    			if(seat.getSeatUse().equals("Y")) {    	    		
+////		    				seatArr[i][j] = " ■ \t";
+////		    				System.out.print(seat.getSeatNo()+seatArr[i][j]);
+////		    			} else if(seat.getSeatUse().equals("N")) {
+////		    				seatArr[i][j] = " □ \t";
+////		    				System.out.print(seat.getSeatNo()+seatArr[i][j]);
+////		    			}
+//		    			System.out.print(seat.getSeatUse().equals("Y") ? seat.getSeatNo()+" ■ \t" : seat.getSeatNo()+" □ \t");
+//		    			
+//		    		}
+//
+//		    	}
+//		    	
+//		    	
+//		    }
+//
+//		}
 	
 	
 	//좌석 등록
@@ -100,17 +97,39 @@ public class SeatService {
 		Seat seat = new Seat();	
 		
 		System.out.println("아이디>");
-		seat.setMemberId(sc.nextLine());		
-		System.out.println("좌석 번호>");
-		seat.setSeatNo(Integer.parseInt(sc.nextLine()));
-//		seat.setSeatRow((int)Math.floor((seatNo-1)/5));
-//		seat.setSeatColumn((seatNo-1)%5);
-		
+		seat.setMemberId(sc.nextLine());	
+		while(true) {
+			System.out.println("좌석 번호>");
+			int seatNo = Integer.parseInt(sc.nextLine());
+			if(seatNo > 20) {
+				System.out.println("좌석이 존재하지 않습니다.");		
+			} else {
+				seat.setSeatNo(seatNo);
+				break;
+			}		
+		}
 		int result = SeatDAO.getInstance().insertSeat(seat);		
 		if(result > 0) {
 			System.out.println("좌석이 등록되었습니다.");
 		}else {
 			System.out.println("좌석이 등록되지 않았습니다.");
+		}
+	}
+
+	
+	//좌석 해지
+	public void deleteSeat() {
+		System.out.println("[좌석 해지]");
+		Seat seat = new Seat();
+		
+		System.out.println("아이디>");
+		seat.setMemberId(sc.nextLine());		
+
+		int result = SeatDAO.getInstance().deleteSeat(seat);	
+		if(result > 0) {
+			System.out.println("좌석이 해지되었습니다.");
+		}else {
+			System.out.println("좌석이 해지되지 않았습니다.");
 		}
 	}
 	
@@ -127,27 +146,9 @@ public class SeatService {
 			result = SeatDAO.getInstance().deleteSeat(seat);
 		}	
 		if(result > 0) {
-			System.out.println("만료회원 좌석이 전부 해지되었습니다.");
+			System.out.println("금일 만료회원 좌석이 전부 해지되었습니다.");
 		}else {
-			System.out.println("만료회원 좌석이 해지되지 않았습니다.");
-		}
-	}
-	
-	
-	
-	//좌석 해지
-	public void deleteSeat() {
-		System.out.println("[좌석 해지]");
-		Seat seat = new Seat();
-		
-		System.out.println("아이디>");
-		seat.setMemberId(sc.nextLine());		
-
-		int result = SeatDAO.getInstance().deleteSeat(seat);	
-		if(result > 0) {
-			System.out.println("좌석이 해지되었습니다.");
-		}else {
-			System.out.println("좌석이 해지되지 않았습니다.");
+			System.out.println("금일 만료회원 좌석이 해지되지 않았습니다.");
 		}
 	}
 	

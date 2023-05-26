@@ -4,6 +4,7 @@ import java.util.Scanner;
 
 import com.yedam.locker.LockerService;
 import com.yedam.member.MemberService;
+import com.yedam.reserve.ReserveService;
 import com.yedam.seat.SeatService;
 
 
@@ -13,6 +14,7 @@ public class AdminApp {
 	MemberService ms = new MemberService();
 	SeatService ss = new SeatService();
 	LockerService ls = new LockerService();
+	ReserveService rss = new ReserveService();
 	
 	public AdminApp() {
 		adminMenu();
@@ -24,7 +26,7 @@ public class AdminApp {
 		while(flag) {
 			System.out.println("--------------------------------------------------------------");
 			System.out.println("[관리자 메뉴]");
-			System.out.println("1. 회원 관리 | 2. 좌석 관리 | 3. 사물함 관리 | 4. 예약 현황 | 5. 로그아웃");
+			System.out.println("1. 회원 관리 | 2. 좌석 관리 | 3. 사물함 관리 | 4. 예약 관리 | 5. 로그아웃");
 			System.out.println("--------------------------------------------------------------");
 			System.out.println("입력>");
 			int menu = Integer.parseInt(sc.nextLine());
@@ -39,7 +41,7 @@ public class AdminApp {
 				lockerMenu();
 				break;
 			case 4:
-				//예약 현황
+				reserveMenu();
 				break;
 			case 5:
 				flag = false;
@@ -55,6 +57,8 @@ public class AdminApp {
 	
 	
 	
+
+
 	//회원 관리
 	private void memberMenu() {
 		boolean flag = true;
@@ -183,7 +187,7 @@ public class AdminApp {
 		while(flag) {
 			System.out.println("--------------------------------------------------------------");
 			System.out.println("[좌석 조회]");
-			System.out.println("1. 전체 좌석 | 2. 미사용 좌석 | 3. 좌석 배치 현황 | 4. 뒤로 가기");
+			System.out.println("1. 전체 좌석 | 2. 미사용 좌석 | 3. 좌석 배치도 | 4. 뒤로 가기");
 			System.out.println("--------------------------------------------------------------");
 			System.out.println("입력>");
 			int menu = Integer.parseInt(sc.nextLine());
@@ -195,7 +199,6 @@ public class AdminApp {
 				ss.getNoUseSeat();
 				break;
 			case 3:
-				ss.setting();
 				ss.nowSeat();
 				break;
 			case 4:
@@ -212,7 +215,7 @@ public class AdminApp {
 		while(flag) {
 			System.out.println("--------------------------------------------------------------");
 			System.out.println("[사물함 관리]");
-			System.out.println("1. 사물함 조회 | 2. 사물함 등록 | 3. 사물함 해지 | 4. 뒤로 가기");
+			System.out.println("1. 사물함 조회 | 2. 사물함 등록 | 3. 사물함 해지 | 4. 만료 사물함 해지 | 5. 뒤로 가기");
 			System.out.println("--------------------------------------------------------------");
 			System.out.println("입력>");
 			int menu = Integer.parseInt(sc.nextLine());
@@ -224,9 +227,12 @@ public class AdminApp {
 				ls.insertLocker();
 				break;
 			case 3:
-				//ls.deleteLocker();
+				ls.deleteLocker();
 				break;
 			case 4:
+				ls.deleteEndLocker();
+				break;
+			case 5:
 				flag = false;
 				break;
 			default:
@@ -240,18 +246,52 @@ public class AdminApp {
 		while(flag) {
 			System.out.println("--------------------------------------------------------------");
 			System.out.println("[사물함 조회]");
-			System.out.println("1. 전체 사물함 | 2. 미사용 사물함 | 3. 뒤로 가기");
+			System.out.println("1. 전체 사물함 | 2. 미사용 사물함 | 3. 사물함 배치도 | 4. 뒤로 가기");
 			System.out.println("--------------------------------------------------------------");
 			System.out.println("입력>");
 			int menu = Integer.parseInt(sc.nextLine());
 			switch(menu) {
 			case 1:
-				//ls.getLockerList();
+				ls.getLockerList();
 				break;
 			case 2:
-				//미사용 사물함
+				ls.getNoUseLocker();
 				break;
 			case 3:
+				ls.nowLocker();
+				break;
+			case 4:
+				flag = false;
+				break;
+			default:
+				System.out.println("메뉴를 잘못 입력하였습니다.");
+			}
+		}
+	}
+	
+	private void reserveMenu() {
+		boolean flag = true;
+		while(flag) {
+			System.out.println("--------------------------------------------------------------");
+			System.out.println("[좌석 예약 관리]");
+			System.out.println("1. 예약 조회 | 2. 예약날짜별 조회 | 3. 예약 등록 | 4. 예약 취소 | 5. 뒤로 가기");
+			System.out.println("--------------------------------------------------------------");
+			System.out.println("입력>");
+			int menu = Integer.parseInt(sc.nextLine());
+			switch(menu) {
+			case 1:
+				rss.getReserveSeat();
+				break;
+			case 2:
+				rss.getReserveDate();
+				break;
+			case 3:
+				rss.insertReserveSeat();
+				break;
+			case 4:
+				rss.deleteReserveSeat();
+				break;
+			case 5:
 				flag = false;
 				break;
 			default:

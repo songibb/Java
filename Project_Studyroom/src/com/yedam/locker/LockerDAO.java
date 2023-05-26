@@ -1,5 +1,8 @@
 package com.yedam.locker;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.yedam.common.DAO;
 
 public class LockerDAO extends DAO{
@@ -19,7 +22,7 @@ public class LockerDAO extends DAO{
 		try {
 			conn();
 			String sql="";
-			for(int i = 1; i<=20; i++) {		
+			for(int i = 1; i<=10; i++) {		
 				sql = "INSERT INTO locker\r\n"
 						+ "VALUES(?,'N',null,null,null)";
 				pstmt = conn.prepareStatement(sql);
@@ -36,29 +39,63 @@ public class LockerDAO extends DAO{
 	
 	
 	//전체 사물함 조회
-//	public List<Locker> getLockerList(){
-//		List<Locker> list = new ArrayList<>();
-//		Locker locker = null;
-//		try {
-//			conn();
-//			String sql = "SELECT s.seat_no, s.seat_use, m.member_id, m.member_name, (m.member_enddate-m.member_startdate) AS \"남은 기간\"\r\n"
-//					+ "FROM seat s LEFT JOIN member m \r\n"
-//					+ "ON s.member_id = m.member_id\r\n"
-//					+ "ORDER BY 1";
-//			pstmt = conn.prepareStatement(sql);
-//			rs = pstmt.executeQuery();
-//			
-//			
-//		}catch(Exception e) {
-//			
-//		}finally {
-//			disconn();
-//		}
-//		return list;
-//	}
+	public List<Locker> getLockerList(){
+		List<Locker> list = new ArrayList<>();
+		Locker locker = null;
+		try {
+			conn();
+			String sql = "SELECT l.locker_no, l.locker_use, m.member_id, m.member_name, l.locker_startdate, l.locker_enddate, m.member_startdate, m.member_enddate\r\n"
+					+ "FROM locker l LEFT JOIN member m\r\n"
+					+ "ON l.member_id = m.member_id\r\n"
+					+ "ORDER BY 1";
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				locker = new Locker();
+				locker.setLockerNo(rs.getInt("locker_no"));
+				locker.setLockerUse(rs.getString("locker_use"));
+				locker.setMemberId(rs.getString("member_id"));
+				locker.setMemberName(rs.getString("member_name"));
+				locker.setLockerStartdate(rs.getDate("locker_startdate"));
+				locker.setLockerEnddate(rs.getDate("locker_enddate"));
+				locker.setMemberStartdate(rs.getDate("member_startdate"));
+				locker.setMemberEnddate(rs.getDate("member_enddate"));
+				list.add(locker);
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			disconn();
+		}
+		return list;
+	}
 	
 	
 	//미사용 사물함 조회
+	public List<Locker> getNoUseLocker(){
+		List<Locker> list = new ArrayList<>();
+		Locker locker = null;
+		try {
+			conn();
+			String sql = "SELECT *\r\n"
+					+ "FROM locker\r\n"
+					+ "WHERE locker_use = 'N'";
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				locker = new Locker();
+				locker.setLockerNo(rs.getInt("locker_no"));
+				locker.setLockerUse(rs.getString("locker_use"));
+				list.add(locker);
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			disconn();
+		}
+		return list;
+	}
 	
 	//사물함 등록
 	public int insertLocker(Locker locker, int day) {
@@ -67,38 +104,22 @@ public class LockerDAO extends DAO{
 			conn();
 			String sql = "";			
 			if(day==1) {
-				sql = "MERGE INTO locker\r\n" + 
-						"USING DUAL \r\n" + 
-						"ON (locker_no = ?)\r\n" + 
-						"WHEN MATCHED THEN\r\n" + 
-						"UPDATE SET locker_use = 'Y', locker_startdate = sysdate, locker_enddate = sysdate+1, member_id = ?\r\n" + 
-						"WHEN NOT MATCHED THEN\r\n" + 
-						"INSERT (locker_no,locker_use,locker_startdate,locker_enddate,member_id) \r\n" + 
-						"VALUES (?,'Y',sysdate,sysdate+1,?)";
+				sql = "UPDATE locker\r\n"
+						+ "SET locker_use = 'Y', locker_startdate = sysdate, locker_enddate = sysdate+1, member_id = ?\r\n"
+						+ "WHERE locker_no = ?";
 			} else if(day==2) {
-				sql = "MERGE INTO locker\r\n" + 
-						"USING DUAL \r\n" + 
-						"ON (locker_no = ?)\r\n" + 
-						"WHEN MATCHED THEN\r\n" + 
-						"UPDATE SET locker_use = 'Y', locker_startdate = sysdate, locker_enddate = sysdate+1, member_id = ?\r\n" + 
-						"WHEN NOT MATCHED THEN\r\n" + 
-						"INSERT (locker_no,locker_use,locker_startdate,locker_enddate,member_id) \r\n" + 
-						"VALUES (?,'Y',sysdate,sysdate+7,?)";
+				sql = "UPDATE locker\r\n"
+						+ "SET locker_use = 'Y', locker_startdate = sysdate, locker_enddate = sysdate+7, member_id = ?\r\n"
+						+ "WHERE locker_no = ?";
 			} else if(day==3) { 
-				sql = "MERGE INTO locker\r\n" + 
-						"USING DUAL \r\n" + 
-						"ON (locker_no = ?)\r\n" + 
-						"WHEN MATCHED THEN\r\n" + 
-						"UPDATE SET locker_use = 'Y', locker_startdate = sysdate, locker_enddate = sysdate+1, member_id = ?\r\n" + 
-						"WHEN NOT MATCHED THEN\r\n" + 
-						"INSERT (locker_no,locker_use,locker_startdate,locker_enddate,member_id) \r\n" + 
-						"VALUES (?,'Y',sysdate,sysdate+30,?)";
+				sql = "UPDATE locker\r\n"
+						+ "SET locker_use = 'Y', locker_startdate = sysdate, locker_enddate = sysdate+30, member_id = ?\r\n"
+						+ "WHERE locker_no = ?";
 			}	
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, locker.getLockerNo());
-			pstmt.setString(2, locker.getMemberId());
-			pstmt.setInt(3, locker.getLockerNo());
-			pstmt.setString(4, locker.getMemberId());
+			pstmt.setString(1, locker.getMemberId());
+			pstmt.setInt(2, locker.getLockerNo());
+
 			result = pstmt.executeUpdate();
 		} catch(Exception e) {
 			e.printStackTrace();
@@ -108,16 +129,17 @@ public class LockerDAO extends DAO{
 		return result;
 	}
 	
+	
 	//사물함 해지
 	public int deleteLocker(Locker locker) {
 		int result = 0;
 		try {
 			conn();
 			String sql = "UPDATE locker \r\n"
-					+ "SET locker_no = ?, locker_use = 'N', locker_startdate = null, locker_enddate = null, member_id = null\r\n"
+					+ "SET locker_no = (SELECT locker_no FROM locker WHERE  member_id = ?), locker_use = 'N', locker_startdate = null, locker_enddate = null, member_id = null\r\n"
 					+ "WHERE member_id = ?";
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, locker.getLockerNo());
+			pstmt.setString(1, locker.getMemberId());
 			pstmt.setString(2, locker.getMemberId());
 			result = pstmt.executeUpdate();
 		}catch(Exception e) {
@@ -128,5 +150,30 @@ public class LockerDAO extends DAO{
 		return result;
 	}
 	
+	
+	//만료 사물함 조회
+	int result = 0;
+	public List<Locker> endLockerList(){
+		List<Locker> list = new ArrayList<>();
+		Locker locker = null;
+		try {
+			conn();
+			String sql = "SELECT * FROM locker WHERE TO_CHAR(locker_enddate) = TO_CHAR(sysdate)";
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				locker = new Locker();
+				locker.setLockerNo(rs.getInt("locker_no"));
+				locker.setMemberId(rs.getString("member_id"));
+				list.add(locker);
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			disconn();
+		}
+		return list;
+	}
 	
 }

@@ -31,8 +31,10 @@ public class Member {
 	private String memberAuth;
 	
 	private int seatNo;
+	private String seatUse;
 	
 	private int lockerNo;
+	private String lockerUse;
 	private Date lockerStartdate;
 	private Date lockerEnddate; 
 	

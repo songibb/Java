@@ -102,17 +102,22 @@ public class MemberService {
 		System.out.println("비밀번호 : " + member.getMemberPw());
 		System.out.println("이름 : " + member.getMemberName());
 		System.out.println("연락처 : " + member.getMemberTel());
-		System.out.println("========================");
 		//좌석
-		System.out.println("좌석번호 : " + member.getSeatNo());
-		System.out.println("등록일 : " + member.getMemberStartdate());
-		System.out.println("만료일 : " + member.getMemberEnddate());
-		System.out.println("========================");
+		if(member.getSeatUse() != null) {
+			System.out.println("========================");
+			System.out.println("좌석번호 : " + member.getSeatNo());
+			System.out.println("등록일 : " + member.getMemberStartdate());
+			System.out.println("만료일 : " + member.getMemberEnddate());
+		} 
 		//사물함
-		//System.out.println("사물함번호 : " + member.getLockerNo());
-		//System.out.println("등록일 : " + member.getLockerStartdate());
-		//System.out.println("만료일 : " + member.getLockerEnddate());
-		System.out.println("========================");
+		if(member.getLockerUse() != null) {
+			System.out.println("========================");
+			System.out.println("사물함번호 : " + member.getLockerNo());
+			System.out.println("등록일 : " + member.getLockerStartdate());
+			System.out.println("만료일 : " + member.getLockerEnddate());
+		}
+		//예약
+
 
 	}
 	
@@ -210,9 +215,20 @@ public class MemberService {
 	public void updateStartdate() {
 		update1();
 		num = 3;
-		System.out.println("수정 등록일 (YYYY-MM-DD)>");
-		Date date = Date.valueOf(sc.nextLine());
-		member.setMemberStartdate(date);
+		while(true) {
+			System.out.println("수정 등록일 (YYYY-MM-DD)>");
+			String date = sc.nextLine();
+			if(date.length()!=10) {
+				System.out.println("날짜 양식에 맞춰 입력해주세요.");		
+			} else {
+				member.setMemberStartdate(Date.valueOf(date));
+				break;
+			}
+
+		}
+//		System.out.println("수정 등록일 (YYYY-MM-DD)>");
+//		Date date = Date.valueOf(sc.nextLine());
+//		member.setMemberStartdate(date);
 
 		System.out.println("기간 선택> 1) 1일 | 2) 7일 | 3) 30일");
 		day = Integer.parseInt(sc.nextLine());	
