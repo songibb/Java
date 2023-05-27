@@ -96,7 +96,7 @@ public class SeatService {
 			}
 		}
 		
-		for(int i = 0; i<seat.length ;i++) {
+		for(int i = 0; i<seat.length; i++) {
 			System.out.print(seat[i].equals("Y") ? (i+1)+" ■ \t" : (i+1)+" □ \t");
 			if((i+1) % 5 == 0) {
 				System.out.println();
