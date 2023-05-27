@@ -44,8 +44,8 @@ public class ReserveService {
 	//예약 등록
 	public void insertReserveSeat() {
 		System.out.println("[좌석 예약 등록]");
-		
 		Reserve res = new Reserve();
+		Date seatDate = null;
 		
 		System.out.println("아이디>");
 		res.setMemberId(sc.nextLine());
@@ -54,39 +54,61 @@ public class ReserveService {
 		while(flag) {	
 			System.out.println("예약 좌석 번호>");
 			int seatNo = Integer.parseInt(sc.nextLine());
-			Date seatDate;
 			while(true) {
 				System.out.println("예약 등록일 (YYYY-MM-DD)>");
 				String date = sc.nextLine();
 				if(date.length()!=10) {
-					System.out.println("날짜 양식에 맞춰 입력해주세요.");		
+					System.out.println("날짜 양식에 맞춰 입력해주세요.");
 				} else {
-					seatDate = Date.valueOf(sc.nextLine());	
+					seatDate = Date.valueOf(date);	
 					break;
 				}
 			}
 			List<Reserve> list = ReserveDAO.getInstance().getReserveDate(seatDate);
 
-			for(Reserve rese : list) {
-				if(seatNo == rese.getReserveSeatNo()) {
+			for(int i = 0; i<list.size(); i++) {
+				if(seatNo == list.get(seatNo-1).getReserveSeatNo()) {
 					System.out.println("이미 예약된 좌석입니다. 다시 선택해주세요.");
 					break;
 				} else {
-					res.setReserveSeatNo(seatNo);
+					res.setReserveSeatNo(seatNo-1);
 					res.setReserveSeatDate(seatDate);
 					flag = false;
 				}
-				int result = ReserveDAO.getInstance().insertReserveSeat(res);
-				if(result > 0) {
-					System.out.println("좌석이 예약되었습니다.");
-				}else {
-					System.out.println("좌석이 예약되지 않았습니다.");
-				}
 				
 			}
+				
 		}
+			
+	
+			
+//			for(Reserve rese : list) {
+//				if(seatNo == rese.getReserveSeatNo()) {
+//					System.out.println("이미 예약된 좌석입니다. 다시 선택해주세요.");
+//					break;
+//				} else {
+//					res.setReserveSeatNo(seatNo);
+//					res.setReserveSeatDate(seatDate);
+//					flag = false;
+//				}
+//				int result = ReserveDAO.getInstance().insertReserveSeat(res);
+//				if(result > 0) {
+//					System.out.println("좌석이 예약되었습니다.");
+//				}else {
+//					System.out.println("좌석이 예약되지 않았습니다.");
+//				}
+//				
+//			}
+
+		int result = ReserveDAO.getInstance().insertReserveSeat(res);
+		if(result > 0) {
+			System.out.println("좌석이 예약되었습니다.");
+		}else {
+			System.out.println("좌석이 예약되지 않았습니다.");
+		}
+
+	}	
 		
-	}
 	
 	//예약 취소
 	public void deleteReserveSeat() {

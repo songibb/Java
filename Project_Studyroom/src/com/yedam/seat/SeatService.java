@@ -30,7 +30,7 @@ public class SeatService {
 			System.out.println("좌석 번호 : " + seat.getSeatNo());
 			System.out.println("좌석 상태 : " + (seat.getSeatUse().equals("Y") ? "사용중" : "사용가능"));
 			if(seat.getSeatUse().equals("Y")) {
-				System.out.println("아이디 : " + seat.getMemberId() + "이름 : " + seat.getMemberName());
+				System.out.println("아이디 : " + seat.getMemberId() + ", 이름 : " + seat.getMemberName());
 				System.out.println("남은 기간 : " + seat.getSeatPeriod() + "일");
 			}	
 			System.out.println("==================================================================🧡");
@@ -87,11 +87,10 @@ public class SeatService {
 	
 	
 	//좌석 등록
-	int day = 0;
 	public void insertSeat() {
-		System.out.println("[좌석 등록]");
-		
-		Seat seat = new Seat();	
+		System.out.println("[좌석 등록]");		
+		Seat seat = new Seat();		
+		int day = 0;
 		
 		System.out.println("아이디>");
 		seat.setMemberId(sc.nextLine());
@@ -101,21 +100,23 @@ public class SeatService {
 			System.out.println("좌석 번호>");
 			int seatNo = Integer.parseInt(sc.nextLine());
 			
-			List<Seat> list = SeatDAO.getInstance().getNoUseSeat();	
+			List<Seat> list = SeatDAO.getInstance().getSeatList();	
 			
 			for(int i = 0; i<list.size(); i++) {
-				if(seatNo != list.get(i).getSeatNo()) {
+				if(list.get(seatNo-1).getSeatUse().equals("Y")) {
 					System.out.println("이미 배정된 좌석입니다. 다시 선택해주세요.");
 					break;
 				} else {
 					seat.setSeatNo(seatNo);
-					System.out.println("기간 선택> 1) 1일 | 2) 7일 | 3) 30일");
-					day = Integer.parseInt(sc.nextLine());
 					flag = false;
 				}
 
 			}
 		}
+
+		System.out.println("기간 선택> 1) 1일 | 2) 7일 | 3) 30일");
+		day = Integer.parseInt(sc.nextLine());
+		
 		int result = SeatDAO.getInstance().insertSeat(seat, day);	
 		if(result > 0) {
 			System.out.println("좌석이 등록되었습니다.");
