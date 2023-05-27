@@ -26,7 +26,7 @@ public class MemberService {
 		
 		if(member != null) {
 			if(member.getMemberPw().equals(pw)) {
-				System.out.println(member.getMemberName()+ "님 환영합니다.");
+				System.out.println(member.getMemberName()+ "님 환영합니다 .");
 				memberInfo = member;
 			} else {
 				System.out.println("비밀번호를 잘못 입력하셨습니다.");
@@ -38,7 +38,6 @@ public class MemberService {
 	
 	//회원가입
 	Member mem = new Member();
-	
 	
 	public void insertNormal() {
 		insertMember();
@@ -96,6 +95,7 @@ public class MemberService {
 	}
 	
 	
+	
 	//내 정보 조회
 	public void getInfo() {
 		System.out.println("[내 정보]");
@@ -103,29 +103,8 @@ public class MemberService {
 		System.out.println("아이디 : " + member.getMemberId());
 		System.out.println("비밀번호 : " + member.getMemberPw());
 		System.out.println("이름 : " + member.getMemberName());
-		System.out.println("연락처 : " + member.getMemberTel());
-		//좌석
-		if(member.getSeatUse() != null) {
-			System.out.println("========================★");
-			System.out.println("좌석번호 : " + member.getSeatNo());
-			System.out.println("등록일 : " + member.getSeatStartdate());
-			System.out.println("만료일 : " + member.getSeatEnddate());
-		} 
-		//사물함
-		if(member.getLockerUse() != null) {
-			System.out.println("========================★");
-			System.out.println("사물함번호 : " + member.getLockerNo());
-			System.out.println("등록일 : " + member.getLockerStartdate());
-			System.out.println("만료일 : " + member.getLockerEnddate());
-		}
-		//예약
-		if(member.getReserveSeatDate() != null) {
-			System.out.println("========================★");
-			System.out.println("예약 좌석 번호 : " + member.getReserveSeatNo());
-			System.out.println("예약일 : " + member.getReserveSeatDate());
-		}
-
-
+		System.out.println("연락처 : " + member.getMemberTel());		
+		printInfo();		
 	}
 	
 	
@@ -152,7 +131,7 @@ public class MemberService {
 		System.out.println("조회 아이디>");
 		String id = sc.nextLine();
 		
-		Member member = MemberDAO.getInstance().getMember(id);
+		Member member = MemberDAO.getInstance().login(id);
 		
 		if(member == null) {
 			System.out.println("조회하신 회원이 존재하지 않습니다.");
@@ -161,11 +140,36 @@ public class MemberService {
 			System.out.println("아이디 : " + member.getMemberId() + ", 비밀번호 : " + member.getMemberPw());
 			System.out.println("이름 : " + member.getMemberName());
 			System.out.println("연락처 : " + member.getMemberTel());	
-			System.out.println("등록일 : " + member.getSeatStartdate() + ", 만료일 : " + member.getSeatEnddate()); 
-			System.out.println("권한 : " + (member.getMemberAuth().equals("N") ? "일반사용자" : "관리자"));
-			
+			System.out.println("권한 : " + (member.getMemberAuth().equals("N") ? "일반사용자" : "관리자"));	
+			printInfo();
 		}
 	}
+	
+
+	public void printInfo() {
+		//좌석
+		if(member.getSeatUse() != null) {
+			System.out.println("========================★");
+			System.out.println("좌석번호 : " + member.getSeatNo());
+			System.out.println("등록일 : " + member.getSeatStartdate());
+			System.out.println("만료일 : " + member.getSeatEnddate());
+		} 
+		//사물함
+		if(member.getLockerUse() != null) {
+			System.out.println("========================★");
+			System.out.println("사물함번호 : " + member.getLockerNo());
+			System.out.println("등록일 : " + member.getLockerStartdate());
+			System.out.println("만료일 : " + member.getLockerEnddate());
+		}
+		//예약
+		if(member.getReserveSeatDate() != null) {
+			System.out.println("========================★");
+			System.out.println("예약 좌석 번호 : " + member.getReserveSeatNo());
+			System.out.println("예약일 : " + member.getReserveSeatDate());
+		}
+	}
+	
+	
 		
 	//금일 만료 회원 조회
 	public void endMemberList() {

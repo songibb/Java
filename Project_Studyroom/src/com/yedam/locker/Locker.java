@@ -22,8 +22,8 @@ public class Locker {
 	private String memberId;
 	
 	private String memberName;
-	private Date memberStartdate;
-	private Date memberEnddate;
+	private Date seatStartdate;
+	private Date seatEnddate;
 	
 	
 }

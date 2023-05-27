@@ -10,9 +10,11 @@ import lombok.Setter;
 
 public class Seat {
 
-//	SEAT_NO     NOT NULL NUMBER       
-//	SEAT_USE    NOT NULL CHAR(1)      
-//	MEMBER_ID            VARCHAR2(20) 
+//	SEAT_NO        NOT NULL NUMBER       
+//	SEAT_USE       NOT NULL CHAR(1)      
+//	SEAT_STARTDATE          DATE         
+//	SEAT_ENDDATE            DATE         
+//	MEMBER_ID               VARCHAR2(20) 
 
 	private int seatNo;
 	private String seatUse;

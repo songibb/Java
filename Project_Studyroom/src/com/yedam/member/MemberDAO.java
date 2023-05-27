@@ -139,35 +139,35 @@ public class MemberDAO extends DAO{
 	}
 	
 	//개별 회원 조회
-	public Member getMember(String id) {
-		Member member = null;
-		try {
-			conn();
-			String sql = "SELECT *\r\n" + 
-					"FROM member m LEFT JOIN seat s ON m.member_id = s.member_id\r\n" + 
-					"WHERE member_id = ?";
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, id);
-			rs = pstmt.executeQuery();
-			
-			if(rs.next()) {
-				member = new Member();
-				member.setMemberNo(rs.getInt("member_no"));
-				member.setMemberId(rs.getString("member_id"));
-				member.setMemberPw(rs.getString("member_pw"));
-				member.setMemberName(rs.getString("member_name"));
-				member.setMemberTel(rs.getString("member_tel"));
-				member.setSeatStartdate(rs.getDate("seat_startdate"));
-				member.setSeatEnddate(rs.getDate("seat_enddate"));
-				member.setMemberAuth(rs.getString("member_auth"));
-			}
-		}catch(Exception e) {
-			e.printStackTrace();
-		}finally {
-			disconn();
-		}
-		return member;
-	}
+//	public Member getMember(String id) {
+//		Member member = null;
+//		try {
+//			conn();
+//			String sql = "SELECT *\r\n" + 
+//					"FROM member m LEFT JOIN seat s ON m.member_id = s.member_id\r\n" + 
+//					"WHERE m.member_id = ?";
+//			pstmt = conn.prepareStatement(sql);
+//			pstmt.setString(1, id);
+//			rs = pstmt.executeQuery();
+//			
+//			if(rs.next()) {
+//				member = new Member();
+//				member.setMemberNo(rs.getInt("member_no"));
+//				member.setMemberId(rs.getString("member_id"));
+//				member.setMemberPw(rs.getString("member_pw"));
+//				member.setMemberName(rs.getString("member_name"));
+//				member.setMemberTel(rs.getString("member_tel"));
+//				member.setSeatStartdate(rs.getDate("seat_startdate"));
+//				member.setSeatEnddate(rs.getDate("seat_enddate"));
+//				member.setMemberAuth(rs.getString("member_auth"));
+//			}
+//		}catch(Exception e) {
+//			e.printStackTrace();
+//		}finally {
+//			disconn();
+//		}
+//		return member;
+//	}
 	
 	//만료 회원 조회
 	int result=0;

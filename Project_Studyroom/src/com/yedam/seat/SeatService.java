@@ -1,5 +1,6 @@
 package com.yedam.seat;
 
+import java.sql.Date;
 import java.util.List;
 import java.util.Scanner;
 
@@ -33,7 +34,7 @@ public class SeatService {
 				System.out.println("아이디 : " + seat.getMemberId() + ", 이름 : " + seat.getMemberName());
 				System.out.println("남은 기간 : " + seat.getSeatPeriod() + "일");
 			}	
-			System.out.println("==================================================================🧡");
+			System.out.println("==================================================================🧡 ");
 		}
 	}
 
@@ -47,23 +48,61 @@ public class SeatService {
 				System.out.println(seat.getSeatNo()+ " : " +(seat.getSeatUse().equals("Y") ? "사용중" : "사용가능"));
 			}
 		} else if(list.size()==0) {
-			System.out.println("빈 좌석이 없습니다. 독서실 이용을 원하신다면 예약하시기 바랍니다.");
+			System.out.println("빈 좌석이 없습니다. 독서실 이용을 원하신다면 예약이 필요합니다.");
+		}
+		
+		System.out.println("[좌석 배치 현황]");
+		System.out.println("사용중 : ■  사용가능 : □");
+		List<Seat> list2 = SeatDAO.getInstance().getSeatList();	
+		for(int i = 0; i<list2.size();i++) {
+			System.out.print(list2.get(i).getSeatUse().equals("Y") ? list.get(i).getSeatNo()+" ■ \t" :  list.get(i).getSeatNo()+" □ \t");
+			if((i+1) % 5 == 0) {
+				System.out.println();
+			}
 		}
 	
 	}
 	
 	
-	//좌석 배치 현황
+	//날짜별 좌석 배치도
 	public void nowSeat() {	
-		System.out.println("[좌석 배치 현황]");
+		System.out.println("[날짜별 좌석 배치 현황]");
+		Date seatDate = null;
+		
+		while(true) {
+			System.out.println("조회할 날짜 (YYYY-MM-DD)>");
+			String date = sc.nextLine();
+			if(date.length()!=10) {
+				System.out.println("날짜 양식에 맞춰 입력해주세요.");
+			} else {
+				seatDate = Date.valueOf(date);	
+				break;
+			}
+		}
+
+		System.out.println("['"+ seatDate +"' 좌석 배치 현황 ]");
 		System.out.println("사용중 : ■  사용가능 : □");
-		List<Seat> list = SeatDAO.getInstance().getSeatList();	
-		for(int i = 0; i<list.size();i++) {
-			System.out.print(list.get(i).getSeatUse().equals("Y") ? list.get(i).getSeatNo()+" ■ \t" :  list.get(i).getSeatNo()+" □ \t");
+		List<Seat> list = SeatDAO.getInstance().getDateSeat(seatDate);
+		String[] seat = new String[20];
+
+		for(int i = 0; i<seat.length; i++) {	
+			for(int j = 0; j<list.size(); j++) {
+				if((i+1) == list.get(j).getSeatNo()) {
+					seat[i]="Y";				
+					break;
+				} else {
+					seat[i]="N";
+				}
+			}
+		}
+		
+		for(int i = 0; i<seat.length ;i++) {
+			System.out.print(seat[i].equals("Y") ? (i+1)+" ■ \t" : (i+1)+" □ \t");
 			if((i+1) % 5 == 0) {
 				System.out.println();
 			}
 		}
+
 	}
 		
 		//데이터를 배열에 다 넣은상태에서 사용

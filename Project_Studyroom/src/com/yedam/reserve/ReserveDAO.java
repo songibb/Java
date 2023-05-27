@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.yedam.common.DAO;
+import com.yedam.seat.Seat;
 
 public class ReserveDAO extends DAO{
 
@@ -77,6 +78,7 @@ public class ReserveDAO extends DAO{
 		return list;
 	}
 	
+
 	//좌석 예약 등록
 	public int insertReserveSeat(Reserve res) {
 		int result = 0;

@@ -1,5 +1,6 @@
 package com.yedam.seat;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -99,6 +100,35 @@ public class SeatDAO extends DAO{
 		}
 		return list;
 	}
+	
+	
+	//날짜별 좌석 조회
+	public List<Seat> getDateSeat(Date date) {
+		List<Seat> list = new ArrayList<>();
+		Seat seat = null;
+		try {
+			conn();
+			String sql = "SELECT *\r\n" + 
+					"FROM seat\r\n" + 
+					"WHERE ? BETWEEN TO_DATE(seat_startdate) AND TO_DATE(seat_enddate)";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setDate(1, date);
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				seat = new Seat();
+				seat.setSeatNo(rs.getInt("seat_no"));
+				seat.setSeatUse(rs.getString("seat_use"));
+				list.add(seat);
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			disconn();
+		}
+		return list;
+	}
+	
 	
 
 	//좌석 등록

@@ -44,10 +44,11 @@ public class LockerDAO extends DAO{
 		Locker locker = null;
 		try {
 			conn();
-			String sql = "SELECT l.locker_no, l.locker_use, m.member_id, m.member_name, l.locker_startdate, l.locker_enddate, m.member_startdate, m.member_enddate\r\n"
-					+ "FROM locker l LEFT JOIN member m\r\n"
-					+ "ON l.member_id = m.member_id\r\n"
-					+ "ORDER BY 1";
+			String sql = "SELECT l.locker_no, l.locker_use, m.member_id, m.member_name, l.locker_startdate, l.locker_enddate, s.seat_startdate, s.seat_enddate\r\n" + 
+					"FROM locker l \r\n" + 
+					"LEFT JOIN member m ON l.member_id = m.member_id\r\n" + 
+					"LEFT JOIN seat s ON l.member_id = s.member_id\r\n" + 
+					"ORDER BY 1";
 			pstmt = conn.prepareStatement(sql);
 			rs = pstmt.executeQuery();
 			while(rs.next()) {
@@ -58,8 +59,8 @@ public class LockerDAO extends DAO{
 				locker.setMemberName(rs.getString("member_name"));
 				locker.setLockerStartdate(rs.getDate("locker_startdate"));
 				locker.setLockerEnddate(rs.getDate("locker_enddate"));
-				locker.setMemberStartdate(rs.getDate("member_startdate"));
-				locker.setMemberEnddate(rs.getDate("member_enddate"));
+				locker.setSeatStartdate(rs.getDate("seat_startdate"));
+				locker.setSeatEnddate(rs.getDate("seat_enddate"));
 				list.add(locker);
 			}
 		}catch(Exception e) {

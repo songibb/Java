@@ -185,7 +185,7 @@ public class AdminApp {
 		while(flag) {
 			System.out.println("-------------------------------------------------------------------");
 			System.out.println("[좌석 조회]");
-			System.out.println("1. 전체 좌석 | 2. 미사용 좌석 | 3. 좌석 배치도 | 4. 뒤로 가기");
+			System.out.println("1. 전체 좌석 | 2. 미사용 좌석 | 3. 날짜별 좌석 배치도 | 4. 뒤로 가기");
 			System.out.println("-------------------------------------------------------------------");
 			System.out.println("입력>");
 			int menu = Integer.parseInt(sc.nextLine());
@@ -272,7 +272,7 @@ public class AdminApp {
 		while(flag) {
 			System.out.println("-------------------------------------------------------------------");
 			System.out.println("[좌석 예약 관리]");
-			System.out.println("1. 예약 조회 | 2. 예약날짜별 조회 | 3. 예약 등록 | 4. 예약 취소 | 5. 뒤로 가기");
+			System.out.println("1. 예약 조회 | 2. 예약 날짜별 조회 | 3. 예약 등록 | 4. 예약 취소 | 5. 뒤로 가기");
 			System.out.println("-------------------------------------------------------------------");
 			System.out.println("입력>");
 			int menu = Integer.parseInt(sc.nextLine());

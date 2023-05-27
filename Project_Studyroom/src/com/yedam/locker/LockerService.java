@@ -31,7 +31,7 @@ public class LockerService {
 			if(locker.getLockerUse().equals("Y")) {
 				System.out.println("아이디 : " + locker.getMemberId() + ", 이름 : " + locker.getMemberName());
 				System.out.println("사물함 등록일 :" + locker.getLockerStartdate() + ", 사물함 만료일 : " + locker.getLockerEnddate());
-				System.out.println("좌석 등록일 : " + locker.getMemberStartdate() + ", 좌석 만료일 : " + locker.getMemberEnddate());
+				System.out.println("좌석 등록일 : " + locker.getSeatStartdate() + ", 좌석 만료일 : " + locker.getSeatEnddate());
 			}
 			System.out.println("==================================================================🧡");
 		}
