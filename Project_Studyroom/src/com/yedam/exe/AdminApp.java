@@ -29,21 +29,21 @@ public class AdminApp {
 			System.out.println("1. 회원 관리 | 2. 좌석 관리 | 3. 사물함 관리 | 4. 예약 관리 | 5. 로그아웃");
 			System.out.println("-------------------------------------------------------------------");
 			System.out.println("입력>");
-			int menu = Integer.parseInt(sc.nextLine());
+			String menu = sc.nextLine();
 			switch(menu) {
-			case 1:
+			case "1":
 				memberMenu();
 				break;
-			case 2:
+			case "2":
 				seatMenu();
 				break;
-			case 3:
+			case "3":
 				lockerMenu();
 				break;
-			case 4:
+			case "4":
 				reserveMenu();
 				break;
-			case 5:
+			case "5":
 				flag = false;
 				MemberService.memberInfo = null;
 				System.out.println("로그아웃 완료되었습니다.");
@@ -68,18 +68,18 @@ public class AdminApp {
 			System.out.println("1. 회원 조회 | 2. 회원 수정 | 3. 회원 삭제 | 4. 뒤로 가기");
 			System.out.println("-------------------------------------------------------------------");
 			System.out.println("입력>");
-			int menu = Integer.parseInt(sc.nextLine());
+			String menu = sc.nextLine();
 			switch(menu) {
-			case 1:
+			case "1":
 				getMemberInfo();
 				break;
-			case 2:
+			case "2":
 				updateMember();
 				break;
-			case 3:
+			case "3":
 				ms.deleteMember();
 				break;
-			case 4:
+			case "4":
 				flag = false;
 				break;
 			default:
@@ -98,18 +98,18 @@ public class AdminApp {
 			System.out.println("1. 전체 회원 | 2. 개별 회원 | 3. 금일 만료 회원 | 4. 뒤로 가기");
 			System.out.println("-------------------------------------------------------------------");
 			System.out.println("입력>");
-			int menu = Integer.parseInt(sc.nextLine());
+			String menu = sc.nextLine();
 			switch(menu) {
-			case 1:
+			case "1":
 				ms.getMemberList();
 				break;
-			case 2:
+			case "2":
 				ms.getMember();
 				break;
-			case 3:
+			case "3":
 				ms.endMemberList();
 				break;
-			case 4:
+			case "4":
 				flag = false;
 				break;
 			default:
@@ -128,18 +128,18 @@ public class AdminApp {
 			System.out.println("1. 비밀번호 | 2. 연락처 | 3. 기간만료 연장 | 4. 뒤로 가기");
 			System.out.println("-------------------------------------------------------------------");
 			System.out.println("입력>");
-			int menu = Integer.parseInt(sc.nextLine());
+			String menu = sc.nextLine();
 			switch(menu) {
-			case 1:
+			case "1":
 				ms.updatePW();
 				break;
-			case 2:
+			case "2":
 				ms.updateTel();
 				break;
-			case 3:
+			case "3":
 				ms.updateStartdate();		
 				break;
-			case 4:
+			case "4":
 				flag = false;
 				break;
 			default:
@@ -157,21 +157,21 @@ public class AdminApp {
 			System.out.println("1. 좌석 조회 | 2. 좌석 등록 | 3. 좌석 해지 | 4. 만료 좌석 해지 | 5. 뒤로 가기");
 			System.out.println("-------------------------------------------------------------------");
 			System.out.println("입력>");
-			int menu = Integer.parseInt(sc.nextLine());
+			String menu = sc.nextLine();
 			switch(menu) {
-			case 1:
+			case "1":
 				getSeatInfo();
 				break;
-			case 2:
+			case "2":
 				ss.insertSeat();
 				break;
-			case 3:
+			case "3":
 				ss.deleteSeat();
 				break;
-			case 4:
+			case "4":
 				ss.deleteEndSeat();
 				break;
-			case 5:
+			case "5":
 				flag = false;
 				break;
 			default:
@@ -188,18 +188,18 @@ public class AdminApp {
 			System.out.println("1. 전체 좌석 | 2. 좌석 배치도 | 3. 날짜별 좌석 조회 | 4. 뒤로 가기");
 			System.out.println("-------------------------------------------------------------------");
 			System.out.println("입력>");
-			int menu = Integer.parseInt(sc.nextLine());
+			String menu = sc.nextLine();
 			switch(menu) {
-			case 1:
+			case "1":
 				ss.getSeatList();
 				break;
-			case 2:
+			case "2":
 				ss.getNowSeat();
 				break;
-			case 3:
+			case "3":
 				ss.getDateSeat();
 				break;
-			case 4:
+			case "4":
 				flag = false;
 				break;
 			default:
@@ -216,21 +216,21 @@ public class AdminApp {
 			System.out.println("1. 사물함 조회 | 2. 사물함 등록 | 3. 사물함 해지 | 4. 만료 사물함 해지 | 5. 뒤로 가기");
 			System.out.println("-------------------------------------------------------------------");
 			System.out.println("입력>");
-			int menu = Integer.parseInt(sc.nextLine());
+			String menu = sc.nextLine();
 			switch(menu) {
-			case 1:
+			case "1":
 				getLockerInfo();
 				break;
-			case 2:
+			case "2":
 				ls.insertLocker();
 				break;
-			case 3:
+			case "3":
 				ls.deleteLocker();
 				break;
-			case 4:
+			case "4":
 				ls.deleteEndLocker();
 				break;
-			case 5:
+			case "5":
 				flag = false;
 				break;
 			default:
@@ -247,18 +247,18 @@ public class AdminApp {
 			System.out.println("1. 전체 사물함 | 2. 사물함 배치도 | 3. 날짜별 사물함 조회 | 4. 뒤로 가기");
 			System.out.println("-------------------------------------------------------------------");
 			System.out.println("입력>");
-			int menu = Integer.parseInt(sc.nextLine());
+			String menu = sc.nextLine();
 			switch(menu) {
-			case 1:
+			case "1":
 				ls.getLockerList();
 				break;
-			case 2:
+			case "2":
 				ls.getNowLocker();
 				break;
-			case 3:
+			case "3":
 				ls.getDateLocker();
 				break;
-			case 4:
+			case "4":
 				flag = false;
 				break;
 			default:
@@ -272,24 +272,24 @@ public class AdminApp {
 		while(flag) {
 			System.out.println("-------------------------------------------------------------------");
 			System.out.println("[좌석 예약 관리]");
-			System.out.println("1. 예약 조회 | 2. 예약 날짜별 조회 | 3. 예약 등록 | 4. 예약 취소 | 5. 뒤로 가기");
+			System.out.println("1. 예약 기록 조회 | 2. 예약 날짜별 조회 | 3. 예약 등록 | 4. 예약 취소 | 5. 뒤로 가기");
 			System.out.println("-------------------------------------------------------------------");
 			System.out.println("입력>");
-			int menu = Integer.parseInt(sc.nextLine());
+			String menu = sc.nextLine();
 			switch(menu) {
-			case 1:
+			case "1":
 				rss.getReserveSeat();
 				break;
-			case 2:
+			case "2":
 				rss.getReserveDate();
 				break;
-			case 3:
+			case "3":
 				rss.insertReserveSeat();
 				break;
-			case 4:
+			case "4":
 				rss.deleteReserveSeat();
 				break;
-			case 5:
+			case "5":
 				flag = false;
 				break;
 			default:

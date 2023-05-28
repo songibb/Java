@@ -86,7 +86,7 @@ public class ReserveService {
 				}
 			}
 			for(int i = 0; i<seat.length ;i++) {
-				System.out.print(seat[i].equals("Y") ? (i+1)+" ■ \t" : (i+1)+" □ \t");
+				System.out.print(seat[i].equals("Y") ? (i+1)+" ★ \t" : (i+1)+" ☆ \t");
 				if((i+1) % 5 == 0) {
 					System.out.println();
 				}
@@ -142,9 +142,7 @@ public class ReserveService {
 					seat[i]="N";
 				}
 			}
-
 			//System.out.println(Arrays.toString(seat));
-
 			if(seat[seatNo-1].equals("Y")) {
 				System.out.println("이미 예약된 좌석입니다. 예약가능한 좌석을 다시 확인하세요.");
 			} else {

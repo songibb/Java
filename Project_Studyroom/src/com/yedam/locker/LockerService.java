@@ -151,9 +151,9 @@ public class LockerService {
 			result = LockerDAO.getInstance().deleteLocker(loc);
 		}
 		if(result > 0) {
-			System.out.println("금일 기간만료 사물함이 전부 해지되었습니다.");
+			System.out.println("기간만료 사물함이 전부 해지되었습니다.");
 		}else {
-			System.out.println("금일 기간만료 사물함이 없습니다.");
+			System.out.println("기간만료 사물함이 없습니다.");
 		}
 	}
 	
