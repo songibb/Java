@@ -1,9 +1,11 @@
 package com.yedam.locker;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.yedam.common.DAO;
+import com.yedam.seat.Seat;
 
 public class LockerDAO extends DAO{
 
@@ -97,6 +99,35 @@ public class LockerDAO extends DAO{
 		}
 		return list;
 	}
+	
+	
+	//날짜별 사물함 조회
+		public List<Locker> getDateLocker(Date date) {
+			List<Locker> list = new ArrayList<>();
+			Locker locker = null;
+			try {
+				conn();
+				String sql = "SELECT *\r\n" + 
+						"FROM locker\r\n" + 
+						"WHERE ? BETWEEN TO_DATE(locker_startdate) AND TO_DATE(locker_enddate)";
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setDate(1, date);
+				rs = pstmt.executeQuery();
+				
+				while(rs.next()) {
+					locker = new Locker();
+					locker.setLockerNo(rs.getInt("locker_no"));
+					locker.setLockerUse(rs.getString("locker_use"));
+					list.add(locker);
+				}
+			} catch(Exception e) {
+				e.printStackTrace();
+			} finally {
+				disconn();
+			}
+			return list;
+		}
+	
 	
 	//사물함 등록
 	public int insertLocker(Locker locker, int day) {

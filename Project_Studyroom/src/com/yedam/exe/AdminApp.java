@@ -185,7 +185,7 @@ public class AdminApp {
 		while(flag) {
 			System.out.println("-------------------------------------------------------------------");
 			System.out.println("[좌석 조회]");
-			System.out.println("1. 전체 좌석 | 2. 미사용 좌석 | 3. 날짜별 좌석 배치도 | 4. 뒤로 가기");
+			System.out.println("1. 전체 좌석 | 2. 좌석 배치도 | 3. 날짜별 좌석 조회 | 4. 뒤로 가기");
 			System.out.println("-------------------------------------------------------------------");
 			System.out.println("입력>");
 			int menu = Integer.parseInt(sc.nextLine());
@@ -194,10 +194,10 @@ public class AdminApp {
 				ss.getSeatList();
 				break;
 			case 2:
-				ss.getNoUseSeat();
+				ss.getNowSeat();
 				break;
 			case 3:
-				ss.nowSeat();
+				ss.getDateSeat();
 				break;
 			case 4:
 				flag = false;
@@ -244,7 +244,7 @@ public class AdminApp {
 		while(flag) {
 			System.out.println("-------------------------------------------------------------------");
 			System.out.println("[사물함 조회]");
-			System.out.println("1. 전체 사물함 | 2. 미사용 사물함 | 3. 사물함 배치도 | 4. 뒤로 가기");
+			System.out.println("1. 전체 사물함 | 2. 사물함 배치도 | 3. 날짜별 사물함 조회 | 4. 뒤로 가기");
 			System.out.println("-------------------------------------------------------------------");
 			System.out.println("입력>");
 			int menu = Integer.parseInt(sc.nextLine());
@@ -253,10 +253,10 @@ public class AdminApp {
 				ls.getLockerList();
 				break;
 			case 2:
-				ls.getNoUseLocker();
+				ls.getNowLocker();
 				break;
 			case 3:
-				ls.nowLocker();
+				ls.getDateLocker();
 				break;
 			case 4:
 				flag = false;

@@ -4,14 +4,25 @@ import java.sql.Date;
 import java.util.List;
 import java.util.Scanner;
 
+import com.yedam.locker.Locker;
+import com.yedam.locker.LockerDAO;
+import com.yedam.locker.LockerService;
+import com.yedam.reserve.Reserve;
+import com.yedam.reserve.ReserveDAO;
+import com.yedam.reserve.ReserveService;
 import com.yedam.seat.Seat;
 import com.yedam.seat.SeatDAO;
+import com.yedam.seat.SeatService;
 
 public class MemberService {
 	
 	public static Member memberInfo = null;
 	
 	Scanner sc = new Scanner(System.in);
+	
+	SeatService ss = new SeatService();
+	LockerService ls = new LockerService();
+	ReserveService rs = new ReserveService();
 	
 	//로그인
 	public void login() {
@@ -257,15 +268,17 @@ public class MemberService {
 	//회원 정보 삭제
 	public void deleteMember() {
 		System.out.println("[회원 정보 삭제]");
+
 		System.out.println("아이디>");
 		String id = sc.nextLine();
-		
+
 		int result = MemberDAO.getInstance().deleteMember(id);
 		if(result>0) {
 			System.out.println("회원 정보를 삭제하였습니다.");
 		} else {
 			System.out.println("회원 정보를 삭제하지 못했습니다.");
 		}
+		
 	}
 
 

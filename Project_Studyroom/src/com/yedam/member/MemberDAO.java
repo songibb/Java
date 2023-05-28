@@ -39,6 +39,7 @@ public class MemberDAO extends DAO{
 			
 			if(rs.next()) {
 				member = new Member();
+				member.setMemberNo(rs.getInt("member_no"));
 				member.setMemberId(rs.getString("member_id"));
 				member.setMemberPw(rs.getString("member_pw"));
 				member.setMemberName(rs.getString("member_name"));
@@ -257,10 +258,28 @@ public class MemberDAO extends DAO{
 		int result = 0;
 		try {
 			conn();
-			String sql = "DELETE FROM member WHERE member_id = ?";
-			pstmt = conn.prepareStatement(sql);
+			String sqls = "UPDATE seat\r\n"
+					+ "SET seat_no = (SELECT seat_no FROM seat WHERE member_id = ?), \r\n"
+					+ "seat_use = 'N', seat_startdate = null, seat_enddate = null, member_id = null\r\n"
+					+ "WHERE member_id = ?";
+			pstmt = conn.prepareStatement(sqls);
+			pstmt.setString(1, id);		
+			pstmt.setString(2, id);
+			result = pstmt.executeUpdate();
+			
+			String sqll = "UPDATE locker \r\n"
+					+ "SET locker_no = (SELECT locker_no FROM locker WHERE member_id = ?), locker_use = 'N', locker_startdate = null, locker_enddate = null, member_id = null\r\n"
+					+ "WHERE member_id = ?";
+			pstmt = conn.prepareStatement(sqll);
+			pstmt.setString(1, id);
+			pstmt.setString(2, id);
+			result = pstmt.executeUpdate();
+			
+			String sqlm = "DELETE FROM member WHERE member_id = ?";
+			pstmt = conn.prepareStatement(sqlm);
 			pstmt.setString(1, id);		
 			result = pstmt.executeUpdate();
+			
 		}catch(Exception e){
 			e.printStackTrace();
 		}finally {

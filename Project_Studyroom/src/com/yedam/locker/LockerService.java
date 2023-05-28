@@ -1,5 +1,6 @@
 package com.yedam.locker;
 
+import java.sql.Date;
 import java.util.List;
 import java.util.Scanner;
 
@@ -37,31 +38,75 @@ public class LockerService {
 		}
 	}
 	
-	//미사용 사물함 조회
-	public void getNoUseLocker() {
-		System.out.println("[미사용 사물함 조회]");
-		List<Locker> list = LockerDAO.getInstance().getNoUseLocker();
-		if(list.size()!=0) {
-			for(Locker locker : list) {
-				System.out.println(locker.getLockerNo()+ " : " +(locker.getLockerUse().equals("Y") ? "사용중" : "사용가능") );
-			}
-		} else if(list.size()==0) {
-			System.out.println("빈 사물함이 없습니다. 사물함을 이용하실 수 없습니다.");
-		}
-	}
-	
-	
 	//사물함 배치도
-	public void nowLocker() {	
+	public void getNowLocker() {
 		System.out.println("[사물함 배치 현황]");
-		System.out.println("사용중 : ■  사용가능 : □");
-		List<Locker> list = LockerDAO.getInstance().getLockerList();	
+		System.out.println("[사용중 : ■  사용가능 : □]");
+		
+		List<Locker> list = LockerDAO.getInstance().getLockerList();
+		List<Locker> list2 = LockerDAO.getInstance().getNoUseLocker();
+		
 		for(int i = 0; i<list.size();i++) {
 			System.out.print(list.get(i).getLockerUse().equals("Y") ? list.get(i).getLockerNo()+" ■ \t" :  list.get(i).getLockerNo()+" □ \t");
 			if((i+1) % 5 == 0) {
 				System.out.println();
 			}
 		}
+		
+		if(list2.size()!=0) {
+			System.out.println();
+			System.out.println("※ 사용가능한 사물함이 없습니다.");
+		}
+	}
+	
+	
+	//날짜별 사물함 조회
+	public void getDateLocker() {	
+		System.out.println("[날짜별 사물함 조회]");
+		Date lockerDate = null;
+		
+		while(true) {
+			System.out.println("조회할 날짜 (YYYY-MM-DD)>");
+			String date = sc.nextLine();
+			if(date.length()!=10) {
+				System.out.println("날짜 양식에 맞춰 입력해주세요.");
+			} else {
+				lockerDate = Date.valueOf(date);	
+				break;
+			}
+		}
+		
+		System.out.println("['"+ lockerDate +"' 사물함 배치 현황 ]");
+		System.out.println("사용중 : ■  사용가능 : □");
+		List<Locker> list = LockerDAO.getInstance().getDateLocker(lockerDate);	
+		String[] locker = new String[10];
+		
+		if(list.size()==0) {
+			for(int i = 0; i<20; i++) {
+				System.out.print((i+1) + " □ \t");
+				if((i+1) % 5 == 0) {
+					System.out.println();
+				}
+			}
+		} else {
+			for(int i = 0; i<locker.length; i++) {	
+				for(int j = 0; j<list.size(); j++) {
+					if((i+1) == list.get(j).getLockerNo()) {
+						locker[i]="Y";				
+						break;
+					} else {
+						locker[i]="N";
+					}
+				}
+			}
+			for(int i = 0; i<locker.length; i++) {
+				System.out.print(locker[i].equals("Y") ? (i+1)+ " ■ \t" : (i+1)+" □ \t");
+				if((i+1) % 5 == 0) {
+					System.out.println();
+				}
+			}
+		}
+		
 	}
 	
 	
@@ -127,6 +172,7 @@ public class LockerService {
 		}else {
 			System.out.println("사물함이 해지되지 않았습니다.");
 		}
+		
 	}
 	
 }
