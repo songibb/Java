@@ -81,8 +81,8 @@ public class LockerService {
 		List<Locker> list = LockerDAO.getInstance().getDateLocker(lockerDate);	
 		String[] locker = new String[10];
 		
-		if(list.size()==0) {
-			for(int i = 0; i<20; i++) {
+		if(list.isEmpty()) {
+			for(int i = 0; i<10; i++) {
 				System.out.print((i+1) + " □ \t");
 				if((i+1) % 5 == 0) {
 					System.out.println();

@@ -48,8 +48,7 @@ public class MemberService {
 	}
 	
 	//회원가입
-	Member mem = new Member();
-	
+	Member mem = new Member();	
 	public void insertNormal() {
 		insertMember();
 		int result = MemberDAO.getInstance().insertNormal(mem);		
@@ -58,8 +57,7 @@ public class MemberService {
 		} else {
 			System.out.println("회원가입을 실패하였습니다.");
 		}
-	}
-	
+	}	
 	public void insertAdmin() {
 		insertMember();
 		int result = MemberDAO.getInstance().insertAdmin(mem);
@@ -68,8 +66,7 @@ public class MemberService {
 		} else {
 			System.out.println("회원가입을 실패하였습니다.");
 		}
-	}
-	
+	}	
 	public void insertMember() {
 		System.out.println("[회원가입에 필요한 정보를 입력해주세요.]");
 		String id = "";
@@ -106,11 +103,10 @@ public class MemberService {
 	}
 	
 	
-	
 	//내 정보 조회
 	public void getInfo() {
 		System.out.println("[내 정보]");
-		Member member = MemberDAO.getInstance().login(memberInfo.getMemberId());
+		member = MemberDAO.getInstance().login(memberInfo.getMemberId());
 		System.out.println("아이디 : " + member.getMemberId());
 		System.out.println("비밀번호 : " + member.getMemberPw());
 		System.out.println("이름 : " + member.getMemberName());
@@ -127,8 +123,8 @@ public class MemberService {
 			System.out.println("회원번호 : " + list.get(i).getMemberNo());
 			System.out.println("아이디 : " + list.get(i).getMemberId() + ", 비밀번호 : " + list.get(i).getMemberPw());
 			System.out.println("이름 : " + list.get(i).getMemberName() + ", 연락처 : " + list.get(i).getMemberTel());
-			if(list.get(i).getMemberAuth().equals("N")) {
-				System.out.println("등록일 : " + list.get(i).getSeatStartdate() + ", 만료일 : " + list.get(i).getSeatEnddate());
+			if(list.get(i).getMemberAuth().equals("N") && list.get(i).getSeatStartdate() != null) {
+				System.out.println("좌석등록일 : " + list.get(i).getSeatStartdate() + ", 좌석만료일 : " + list.get(i).getSeatEnddate());
 			}
 			System.out.println("권한 : " + (list.get(i).getMemberAuth().equals("N") ? "일반사용자" : "관리자"));
 			System.out.println("==================================================================🧡");
@@ -142,7 +138,7 @@ public class MemberService {
 		System.out.println("조회 아이디>");
 		String id = sc.nextLine();
 		
-		Member member = MemberDAO.getInstance().login(id);
+		member = MemberDAO.getInstance().login(id);
 		
 		if(member == null) {
 			System.out.println("조회하신 회원이 존재하지 않습니다.");

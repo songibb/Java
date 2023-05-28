@@ -20,6 +20,7 @@ public class Reserve {
 	private String memberId;
 	
 	private String memberName;
+	private int seatNo;
 	
 	
 

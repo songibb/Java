@@ -27,12 +27,14 @@ public class ReserveDAO extends DAO{
 			conn();
 			String sql = "SELECT *\r\n"
 					+ "FROM reserveseat r\r\n"
-					+ "LEFT JOIN member m ON r.member_id = m.member_id";
+					+ "LEFT JOIN member m ON r.member_id = m.member_id\r\n"
+					+ "ORDER BY reserve_no";
 			pstmt = conn.prepareStatement(sql);
 			rs = pstmt.executeQuery();
 			
 			while(rs.next()) {
 				res = new Reserve();
+				res.setReserveNo(rs.getInt("reserve_no"));
 				res.setReserveSeatNo(rs.getInt("reserve_seat_no"));
 				res.setReserveSeatDate(rs.getDate("reserve_seat_date"));
 				res.setMemberId(rs.getString("member_id"));
@@ -69,6 +71,7 @@ public class ReserveDAO extends DAO{
 				res.setMemberName(rs.getString("member_name"));
 				list.add(res);
 			}
+	
 		}catch(Exception e) {
 			e.printStackTrace();
 		}finally {
@@ -76,6 +79,8 @@ public class ReserveDAO extends DAO{
 		}
 		return list;
 	}
+	
+
 	
 
 	//좌석 예약 등록

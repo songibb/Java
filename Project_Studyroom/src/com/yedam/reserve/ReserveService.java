@@ -1,53 +1,38 @@
 package com.yedam.reserve;
 
 import java.sql.Date;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
 import com.yedam.member.Member;
 import com.yedam.member.MemberDAO;
+import com.yedam.seat.SeatService;
 
 public class ReserveService {
 
 	
 	Scanner sc = new Scanner(System.in);
+	SeatService ss = new SeatService();
 	
 	//예약 조회
 	public void getReserveSeat() {
-		System.out.println("[좌석 예약 조회]");
+		System.out.println("[예약 기록 전체 조회]");
 		List<Reserve> list = ReserveDAO.getInstance().getReserveSeat();
 		
 		for(Reserve res : list) {
-			System.out.println("예약한 좌석 번호 : " + res.getReserveSeatNo() + ", 예약일 : " + res.getReserveSeatDate() 
+			System.out.println("번호 : " + res.getReserveNo() + ", 예약 좌석 번호 : " + res.getReserveSeatNo() + ", 예약일 : " + res.getReserveSeatDate() 
 								+ ", 아이디 : " + res.getMemberId() + ", 이름 : " + res.getMemberName());
 			System.out.println("==================================================================🧡");
 		}
 	}
 	
-	
-	
 
 	//예약 날짜별 조회
-	Date seatDate = null;
+	
 	public void getReserveDate() {
-		System.out.println("[예약 날짜별 조회]");
+		System.out.println("[예약 날짜별 조회]");	
+		Date seatDate = null;
 		
-		nowReserveSeat();
-		System.out.println();
-	
-		List<Reserve> list = ReserveDAO.getInstance().getReserveDate(seatDate);
-		for(Reserve res : list) {			
-			if(list != null) {
-				System.out.println("[예약 상세 정보]");
-				System.out.println("예약한 좌석 번호 : " + res.getReserveSeatNo() + ", 예약일 : " + res.getReserveSeatDate() 
-									+ ", 아이디 : " + res.getMemberId() + ", 이름 : " + res.getMemberName());
-				System.out.println("==================================================================🧡");
-			}	
-		}	
-	}
-	
-	public void nowReserveSeat() {
 		while(true) {
 			System.out.println("조회할 날짜 (YYYY-MM-DD)>");
 			String date = sc.nextLine();
@@ -58,42 +43,23 @@ public class ReserveService {
 				break;
 			}
 		}
-		
 		System.out.println();
-		System.out.println("['"+ seatDate +"' 좌석 예약 현황 ]");			
-		System.out.println("사용중 : ■  사용가능 : □");
-		List<Reserve> list = ReserveDAO.getInstance().getReserveDate(seatDate);
-		String[] seat = new String[20];
 	
-		if(list.size()==0) {
-			for(int i = 0; i<20; i++) {
-				System.out.print((i+1) + " □ \t");
-				if((i+1) % 5 == 0) {
-					System.out.println();
-				}
-			}
-			System.out.println();
+		List<Reserve> list = ReserveDAO.getInstance().getReserveDate(seatDate);
+		System.out.println("['" + seatDate + "' 예약 상세 정보]");
+		if(list.isEmpty()) {
 			System.out.println("조회하신 날짜에는 예약이 없습니다.");
 		} else {
-			for(int i = 0; i<seat.length; i++) {		
-				for(int j = 0; j<list.size(); j++) {
-					if((i+1) == list.get(j).getReserveSeatNo()) {
-						seat[i]="Y";				
-						break;
-					} else {
-						seat[i]="N";
-					}
-				}
+			for(Reserve res : list) {						
+				System.out.println("예약한 좌석 번호 : " + res.getReserveSeatNo() + ", 예약일 : " + res.getReserveSeatDate() 
+								+ ", 아이디 : " + res.getMemberId() + ", 이름 : " + res.getMemberName());
+				System.out.println("==================================================================🧡");
 			}
-			for(int i = 0; i<seat.length ;i++) {
-				System.out.print(seat[i].equals("Y") ? (i+1)+" ★ \t" : (i+1)+" ☆ \t");
-				if((i+1) % 5 == 0) {
-					System.out.println();
-				}
-			}	
 		}
+		
+			
 	}
-	
+
 	
 	
 	//예약 등록

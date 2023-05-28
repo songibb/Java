@@ -1,6 +1,7 @@
 package com.yedam.seat;
 
 import java.sql.Date;
+
 import java.util.List;
 import java.util.Scanner;
 
@@ -34,7 +35,7 @@ public class SeatService {
 				System.out.println("아이디 : " + seat.getMemberId() + ", 이름 : " + seat.getMemberName());
 				System.out.println("남은 기간 : " + seat.getSeatPeriod() + "일");
 			}	
-			System.out.println("==================================================================🧡 ");
+			System.out.println("==================================================================🧡");
 		}
 	}
 
@@ -63,10 +64,10 @@ public class SeatService {
 	
 	
 	//날짜별 좌석 조회
+	
 	public void getDateSeat() {	
 		System.out.println("[날짜별 좌석 조회]");
 		Date seatDate = null;
-		
 		while(true) {
 			System.out.println("조회할 날짜 (YYYY-MM-DD)>");
 			String date = sc.nextLine();
@@ -77,13 +78,13 @@ public class SeatService {
 				break;
 			}
 		}
-
+		
 		System.out.println("['"+ seatDate +"' 좌석 배치 현황 ]");
 		System.out.println("[사용중 : ■  사용가능 : □]");
 		List<Seat> list = SeatDAO.getInstance().getDateSeat(seatDate);
 		String[] seat = new String[20];
 
-		if(list.size()==0) {
+		if(list.isEmpty()) {
 			for(int i = 0; i<20; i++) {
 				System.out.print((i+1) + " □ \t");
 				if((i+1) % 5 == 0) {
@@ -111,6 +112,9 @@ public class SeatService {
 		}
 		
 	}
+	
+
+	
 		
 		//데이터를 배열에 다 넣은상태에서 사용
 //		for(Seat seat : list) {
@@ -135,30 +139,43 @@ public class SeatService {
 	//좌석 등록
 	public void insertSeat() {
 		System.out.println("[좌석 등록]");		
-		Seat seat = new Seat();		
+		Seat seat = new Seat();	
+		String id = "";
+		int seatNo = 0;
 		int day = 0;
 		
-		System.out.println("아이디>");
-		seat.setMemberId(sc.nextLine());
 		
-		boolean flag = true;
-		while(flag) {
+		while(true) {
+			System.out.println("아이디>");
+			id = sc.nextLine();		
+			Member member = MemberDAO.getInstance().login(id);
+			if(member.getSeatUse() != null) {
+				System.out.println("이미 좌석이 배정된 회원입니다.");
+			}else {				
+				break;
+			}
+		}
+		seat.setMemberId(id);
+		
+		while(true) {
 			System.out.println("좌석 번호>");
-			int seatNo = Integer.parseInt(sc.nextLine());
+			seatNo = Integer.parseInt(sc.nextLine());
 			
 			List<Seat> list = SeatDAO.getInstance().getSeatList();	
 			
-			for(int i = 0; i<list.size(); i++) {
-				if(list.get(seatNo-1).getSeatUse().equals("Y")) {
-					System.out.println("이미 배정된 좌석입니다. 다시 선택해주세요.");
-					break;
-				} else {
-					seat.setSeatNo(seatNo);
-					flag = false;
-				}
-
+			String[] seatArr = new String[20];
+			for(int i = 0; i<seatArr.length; i++) {	
+				seatArr[i] = list.get(i).getSeatUse();
 			}
+			//System.out.println(Arrays.toString(seatArr));
+			if(seatArr[seatNo-1].equals("Y")) {
+				System.out.println("이미 배정된 좌석입니다. 다시 선택해주세요.");
+			} else {
+				break;
+			}
+
 		}
+		seat.setSeatNo(seatNo);
 
 		System.out.println("기간 선택> 1) 1일 | 2) 7일 | 3) 30일");
 		day = Integer.parseInt(sc.nextLine());
