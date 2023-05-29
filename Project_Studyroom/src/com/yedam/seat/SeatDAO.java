@@ -109,8 +109,9 @@ public class SeatDAO extends DAO{
 		try {
 			conn();
 			String sql = "SELECT *\r\n" + 
-					"FROM seat\r\n" + 
-					"WHERE ? BETWEEN TO_DATE(seat_startdate) AND TO_DATE(seat_enddate)";
+						"FROM seat\r\n" + 
+						"WHERE TO_DATE(?) BETWEEN TO_DATE(seat_startdate) AND TO_DATE(seat_enddate)";
+			
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setDate(1, date);
 			rs = pstmt.executeQuery();

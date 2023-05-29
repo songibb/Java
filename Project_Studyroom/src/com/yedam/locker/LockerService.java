@@ -34,7 +34,7 @@ public class LockerService {
 				System.out.println("사물함 등록일 :" + locker.getLockerStartdate() + ", 사물함 만료일 : " + locker.getLockerEnddate());
 				System.out.println("좌석 등록일 : " + locker.getSeatStartdate() + ", 좌석 만료일 : " + locker.getSeatEnddate());
 			}
-			System.out.println("==================================================================🧡");
+			System.out.println("===================================================================");
 		}
 	}
 	

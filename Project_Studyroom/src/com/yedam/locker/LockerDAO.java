@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.yedam.common.DAO;
-import com.yedam.seat.Seat;
+
 
 public class LockerDAO extends DAO{
 

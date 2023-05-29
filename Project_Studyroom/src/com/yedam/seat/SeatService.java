@@ -1,7 +1,6 @@
 package com.yedam.seat;
 
 import java.sql.Date;
-
 import java.util.List;
 import java.util.Scanner;
 
@@ -35,7 +34,7 @@ public class SeatService {
 				System.out.println("아이디 : " + seat.getMemberId() + ", 이름 : " + seat.getMemberName());
 				System.out.println("남은 기간 : " + seat.getSeatPeriod() + "일");
 			}	
-			System.out.println("==================================================================🧡");
+			System.out.println("===================================================================");
 		}
 	}
 
@@ -64,10 +63,10 @@ public class SeatService {
 	
 	
 	//날짜별 좌석 조회
-	
-	public void getDateSeat() {	
+	Date seatDate = null;
+	public void getDateSeat() {			
 		System.out.println("[날짜별 좌석 조회]");
-		Date seatDate = null;
+		;
 		while(true) {
 			System.out.println("조회할 날짜 (YYYY-MM-DD)>");
 			String date = sc.nextLine();
@@ -110,6 +109,7 @@ public class SeatService {
 				}
 			}
 		}
+		
 		
 	}
 	
